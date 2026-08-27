@@ -1,29 +1,26 @@
-# vihangackumanayaka
+# Vihanga C. Kumanayaka — Portfolio
 
-Bun + React project.
+A personal portfolio website showcasing Engineering Projects and professional expertise, built for potential employers.
 
-To install dependencies:
+## Tech Stack
 
-```bash
-bun install
-```
+- Bun 1.4.0 (runtime, server, bundler)
+- React 19 + TypeScript
+- Plain CSS
 
-To start a development server:
-
-```bash
-bun dev
-```
-
-To build for production:
+## Getting Started
 
 ```bash
-bun run build
+bun install    # install dependencies
+bun dev        # start dev server with HMR
+bun run build  # production build to dist/
+bun start      # run production server
 ```
 
-To run for production:
+## Project Documentation
 
-```bash
-bun start
-```
+**Read `PROJECT_LOG.md` first** before working on this project — it contains the full history of changes, builds, modules, and discussions.
 
-This project was created using `bun init` in Bun v1.4.0.
+## Skills
+
+This repo includes skills in `.claude/skills/` (react-best-practices, playwright-skill, shadcn, frontend-design) used to guide development work.
