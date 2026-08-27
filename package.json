@@ -9,6 +9,7 @@
     "start": "NODE_ENV=production bun src/index.ts"
   },
   "dependencies": {
+    "ogl": "^1.0.11",
     "react": "^19",
     "react-dom": "^19"
   },
