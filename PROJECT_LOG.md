@@ -11,7 +11,7 @@
 - **Purpose:** Personal portfolio website showcasing the owner's Engineering Projects and the expertise gained over the years. Presented to potential employers evaluating the owner's work.
 - **Owner:** Vihanga C. Kumanayaka
 - **Repository:** https://github.com/Vihanga-c/vihangackumanayaka.git
-- **Branch:** main
+- **Branch:** develop (created 2026-08-29; all changes committed here going forward; `main` reserved for stable releases)
 
 ## Tech Stack
 
@@ -58,6 +58,7 @@
 2. Everything we do and discuss is recorded in this file (`PROJECT_LOG.md`).
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
+5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
 
 ## Changelog / Build Log
 
