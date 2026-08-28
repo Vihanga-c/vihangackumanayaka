@@ -37,7 +37,7 @@
 | Module | Status | Description |
 |---|---|---|
 | `src/App.tsx` | Done (iteration 3) | Root component — renders `<Navbar />`, `<Hero />`, and `<Intro />` |
-| `src/components/Navbar.tsx` | Done | Floating glassmorphic header with navigation links ("About me", "View my projects", "Get in touch") and scroll blur transition |
+| `src/components/Navbar.tsx` | Done (iteration 2) | Left-aligned transparent glassmorphic pill nav with links ("About me", "View my projects", "Get in touch") |
 | `src/components/Hero.tsx` | Done (iteration 4) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA |
 | `src/components/Intro.tsx` | Done (iteration 2) | White "intro of me" section with `id="about"` anchor — big title, italic paragraphs; parallax slides up and covers hero |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
@@ -162,6 +162,17 @@
   - Kept only "Get my CV" with the translucent glass button styling.
 - **Anchor IDs updated (`src/components/Intro.tsx`):**
   - Updated section anchor to `id="about"` to support "About me" navigation link.
+- **Build verified:** `bun run build` OK (35 modules), `tsc --noEmit` passes cleanly.
+
+## Changelog / Build Log
+
+### 2026-08-29 — Session 9: Left-aligned transparent glass navbar & removed brand dot
+
+- **Navbar refined (`src/components/Navbar.tsx` & `src/index.css`):**
+  - Removed brand element (pink dot + "Vihanga C.") from the navbar.
+  - Left-aligned the navigation bar container (`justify-content: flex-start`, padding `0 2.5rem`, top `1.5rem`).
+  - Applied the transparent glass design (`var(--surface-glass)`, `backdrop-filter: blur(10px)`, border `1px solid rgba(255, 255, 255, 0.3)`) so the background remains visible through it.
+  - Retained navigation links: "About me", "View my projects", "Get in touch".
 - **Build verified:** `bun run build` OK (35 modules), `tsc --noEmit` passes cleanly.
 
 ## Discussion Notes
