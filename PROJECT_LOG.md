@@ -37,8 +37,8 @@
 | Module | Status | Description |
 |---|---|---|
 | `src/App.tsx` | Done (iteration 2) | Root component — renders `<Hero />` |
-| `src/components/Hero.tsx` | Done (iteration 2) | Hero landing page: full-viewport Grainient background + name, subtitle, CTAs; respects `prefers-reduced-motion`; parallax cover: translates up at 0.66× scroll speed |
-| `src/components/Intro.tsx` | Done | White "intro of me" section — big right-aligned title, italic filler paragraphs; slides up at 1× and covers the hero (150vh, z-index 1) |
+| `src/components/Hero.tsx` | Done (iteration 3) | Hero landing page: full-viewport Grainient background + name, subtitle, and 4 CTAs ("Introduction", "View Projects", "Get in Touch", "Get my CV"); respects `prefers-reduced-motion`; parallax cover motion |
+| `src/components/Intro.tsx` | Done (iteration 2) | White "intro of me" section with `id="intro"` anchor — big title, italic paragraphs; parallax slides up and covers hero |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
 | `components.json` | Created manually | shadcn config (`style: base-nova`, aliases `@/*` → `./src/*`) |
 | `src/frontend.tsx` | Done | React entry point — mounts `<App />` into `#root` with StrictMode + HMR support |
@@ -120,6 +120,20 @@
 - Note: owner sent a screenshot; this model cannot read images, so the layout change was done from the textual description.
 - **Build verified:** `bun run build` OK, `tsc --noEmit` passes.
 - Commit: intro layout shift pushed to GitHub.
+
+## Changelog / Build Log
+
+### 2026-08-29 — Session 6: Added "Introduction" and "Get my CV" buttons to Hero
+
+- **Hero CTAs added & reordered (`src/components/Hero.tsx`):**
+  - Updated CTA actions list to 4 buttons in requested order: "Introduction" (`#intro`), "View Projects" (`#projects`), "Get in Touch" (`#contact`), and "Get my CV" (`#cv`).
+  - Styled "Introduction" and "Get my CV" using the secondary translucent glass aesthetic (`btn btn-secondary`).
+- **Styling enhancements (`src/index.css`):**
+  - Added `backdrop-filter: blur(8px)` / `-webkit-backdrop-filter` on `.btn-secondary` for glassmorphic translucency against the Grainient background.
+  - Added `scroll-behavior: smooth` on `html` for smooth transitions when clicking anchors like `#intro`.
+- **Anchor link support (`src/components/Intro.tsx`):**
+  - Added `id="intro"` to `<section>` in Intro component for anchor navigation.
+- **Build verified:** `bun run build` OK (34 modules), `tsc --noEmit` passes cleanly.
 
 ## Discussion Notes
 

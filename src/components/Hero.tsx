@@ -79,11 +79,17 @@ export function Hero() {
           shipped, and documented.
         </p>
         <div className="hero-actions">
+          <a className="btn btn-secondary" href="#intro">
+            Introduction
+          </a>
           <a className="btn btn-primary" href="#projects">
             View Projects
           </a>
           <a className="btn btn-secondary" href="#contact">
             Get in Touch
+          </a>
+          <a className="btn btn-secondary" href="#cv">
+            Get my CV
           </a>
         </div>
       </div>

@@ -37,7 +37,12 @@ export function Intro() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="intro" aria-labelledby="intro-title">
+    <section
+      ref={sectionRef}
+      id="intro"
+      className="intro"
+      aria-labelledby="intro-title"
+    >
       <div className="intro-content">
         <h2 id="intro-title" className="intro-title">
           intro of me
