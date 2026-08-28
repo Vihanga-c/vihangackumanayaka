@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Grainient from "./Grainient";
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -12,8 +13,37 @@ export function Hero() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // Hero is 100vh tall, the intro section that covers it is 150vh:
+    // the cover completes at scrollY = 150vh, so the hero must translate
+    // up by 100vh over that range -> rate = 100 / 150 = 0.666.
+    const RATE = 100 / 150;
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      section.style.transform = `translateY(${window.scrollY * -RATE}px)`;
+    };
+    const onScroll = () => {
+      if (raf === 0) raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
-    <section className="hero" aria-labelledby="hero-title">
+    <section ref={sectionRef} className="hero" aria-labelledby="hero-title">
       <div className="hero-background" aria-hidden="true">
         <Grainient
           color1="#FF9FFC"

@@ -37,7 +37,8 @@
 | Module | Status | Description |
 |---|---|---|
 | `src/App.tsx` | Done (iteration 2) | Root component — renders `<Hero />` |
-| `src/components/Hero.tsx` | Done | Hero landing page: full-viewport Grainient background + name, subtitle, CTAs; respects `prefers-reduced-motion` |
+| `src/components/Hero.tsx` | Done (iteration 2) | Hero landing page: full-viewport Grainient background + name, subtitle, CTAs; respects `prefers-reduced-motion`; parallax cover: translates up at 0.66× scroll speed |
+| `src/components/Intro.tsx` | Done | White "intro of me" section — big right-aligned title, italic filler paragraphs; slides up at 1× and covers the hero (150vh, z-index 1) |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
 | `components.json` | Created manually | shadcn config (`style: base-nova`, aliases `@/*` → `./src/*`) |
 | `src/frontend.tsx` | Done | React entry point — mounts `<App />` into `#root` with StrictMode + HMR support |
@@ -89,6 +90,17 @@
 - **Cleanup:** `src/App.tsx` now renders only `<Hero />`; removed template `src/APITester.tsx`; `src/index.css` rewritten as hero design system (tokens: `--ink`, `--ink-muted`, `--accent`, glass surface, focus-visible ring, hero entrance animation, reduced-motion kill switch); page title updated in `src/index.html`.
 - **Build verified:** `bun run build` OK (33 modules, 0.45 MB JS incl. ogl). `tsc --noEmit` passes.
 - Commit: hero module + shadcn component module pushed to GitHub.
+
+## Changelog / Build Log
+
+### 2026-08-27 — Session 3: Parallax cover effect + "intro of me" section
+
+- **Parallax cover effect:** Hero (100vh) now translates up at 0.66× scroll speed (`translateY(-scrollY * 100/150)`, rAF-throttled, passive listener, `will-change: transform`) while the new intro section (150vh, `z-index: 1`, white) slides up at normal 1× speed and covers it. Cover completes exactly at max scroll; disabled under `prefers-reduced-motion`.
+- **New module `src/components/Intro.tsx`:** entirely white section with black text — big right-aligned title "intro of me" (clamp 3rem–6.5rem, weight 800) followed by italic intro paragraphs (placeholder "random words" filler, 2 paragraphs, 58ch right-aligned block; centered on mobile).
+- **`src/App.tsx`:** renders `<main>` with `<Hero />` + `<Intro />`.
+- **`src/index.css`:** added `.intro`, `.intro-content`, `.intro-title`, `.intro-text` styles; hero gets `z-index: 0` + `will-change: transform`.
+- **Build verified:** `bun run build` OK (34 modules), `tsc --noEmit` passes.
+- Commit: parallax + intro module pushed to GitHub.
 
 ## Discussion Notes
 
