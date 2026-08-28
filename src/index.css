@@ -153,15 +153,15 @@ html {
   background: #ffffff;
   color: #0a0a0a;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 6rem 4rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 14vh 4rem;
   will-change: transform;
 }
 
 .intro-content {
   max-width: 58ch;
-  text-align: right;
+  text-align: left;
 }
 
 .intro-title {
@@ -182,8 +182,7 @@ html {
 
 @media (max-width: 640px) {
   .intro {
-    justify-content: center;
-    padding: 4rem 1.5rem;
+    padding: 10vh 1.5rem;
   }
 }
 

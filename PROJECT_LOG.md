@@ -112,6 +112,15 @@
 - **Build verified:** `bun run build` OK, `tsc --noEmit` passes.
 - Commit: parallax tuning pushed to GitHub.
 
+## Changelog / Build Log
+
+### 2026-08-27 — Session 5: Intro content moved to top-left, room reserved below
+
+- **`src/index.css`:** intro content now `align-items: flex-start` + `justify-content: flex-start`, padding `14vh 4rem` — title + paragraphs sit in the upper-left of the 180vh section; the lower ~100vh stays empty and reserved for future content (projects etc.). Mobile: `10vh 1.5rem`.
+- Note: owner sent a screenshot; this model cannot read images, so the layout change was done from the textual description.
+- **Build verified:** `bun run build` OK, `tsc --noEmit` passes.
+- Commit: intro layout shift pushed to GitHub.
+
 ## Discussion Notes
 
 - Portfolio goal (2026-08-27): showcase Engineering Projects and professional expertise to potential employers.
