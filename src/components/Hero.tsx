@@ -82,7 +82,7 @@ export function Hero() {
           <a className="btn btn-secondary" href="#intro">
             Introduction
           </a>
-          <a className="btn btn-primary" href="#projects">
+          <a className="btn btn-secondary" href="#projects">
             View Projects
           </a>
           <a className="btn btn-secondary" href="#contact">

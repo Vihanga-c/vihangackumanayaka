@@ -135,6 +135,18 @@
   - Added `id="intro"` to `<section>` in Intro component for anchor navigation.
 - **Build verified:** `bun run build` OK (34 modules), `tsc --noEmit` passes cleanly.
 
+## Changelog / Build Log
+
+### 2026-08-29 — Session 7: Unified translucent button style & side-by-side row layout
+
+- **All 4 CTAs unified (`src/components/Hero.tsx`):**
+  - Changed "View Projects" to `btn-secondary` so all 4 buttons ("Introduction", "View Projects", "Get in Touch", "Get my CV") have the identical translucent glassmorphic design.
+- **Single-row side-by-side layout (`src/index.css`):**
+  - Expanded `.hero-content` max-width to `920px` to fit all four buttons horizontally on a single line on desktop.
+  - Refined button padding (`0.85rem 1.6rem`), font size (`0.95rem`), and added `white-space: nowrap` to prevent awkward wrapping of button labels.
+  - Adjusted button and gap scaling in mobile media query.
+- **Build verified:** `bun run build` OK (34 modules), `tsc --noEmit` passes cleanly.
+
 ## Discussion Notes
 
 - Portfolio goal (2026-08-27): showcase Engineering Projects and professional expertise to potential employers.
