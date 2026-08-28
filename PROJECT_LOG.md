@@ -102,6 +102,16 @@
 - **Build verified:** `bun run build` OK (34 modules), `tsc --noEmit` passes.
 - Commit: parallax + intro module pushed to GitHub.
 
+## Changelog / Build Log
+
+### 2026-08-27 — Session 4: Tuned cover parallax (faster relative motion, no dark gap)
+
+- **Relative + absolute motion:** intro now has its own scroll transform (`translateY(-1.2 * scrollY)`, rAF-throttled, `will-change: transform`) — intro moves up at 1.2× while hero moves at 0.556× (100/180), so both rise (absolute) and the intro visibly sweeps in front of the hero (relative 0.644×). Intro fully covers the viewport by ~83vh of scroll.
+- **Dark space removed:** `body`/`html` background changed from dark blue `#17102b` to white — any overscroll/gap now shows white, never dark. Intro is flush against the hero (no layout gap) and is now 180vh tall (content stays visible from cover through max scroll).
+- **Files:** `src/components/Intro.tsx` (scroll effect added), `src/components/Hero.tsx` (RATE → 100/180), `src/index.css` (white backgrounds, intro 180vh, will-change).
+- **Build verified:** `bun run build` OK, `tsc --noEmit` passes.
+- Commit: parallax tuning pushed to GitHub.
+
 ## Discussion Notes
 
 - Portfolio goal (2026-08-27): showcase Engineering Projects and professional expertise to potential employers.

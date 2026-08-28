@@ -25,8 +25,12 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #17102b;
+  background-color: #ffffff;
   color: var(--ink);
+}
+
+html {
+  background: #ffffff;
 }
 
 :focus-visible {
@@ -145,13 +149,14 @@ body {
 .intro {
   position: relative;
   z-index: 1;
-  min-height: 150vh;
+  min-height: 180vh;
   background: #ffffff;
   color: #0a0a0a;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: 6rem 4rem;
+  will-change: transform;
 }
 
 .intro-content {

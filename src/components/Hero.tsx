@@ -18,10 +18,10 @@ export function Hero() {
     if (!section) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    // Hero is 100vh tall, the intro section that covers it is 150vh:
-    // the cover completes at scrollY = 150vh, so the hero must translate
-    // up by 100vh over that range -> rate = 100 / 150 = 0.666.
-    const RATE = 100 / 150;
+    // Hero is 100vh tall, page scroll range is 180vh (intro is 180vh):
+    // hero fully exits exactly at max scroll -> rate = 100 / 180 = 0.556.
+    // The intro (in flow, 1.2x) overtakes it, so relative speed = 0.644.
+    const RATE = 100 / 180;
 
     let raf = 0;
     const update = () => {
