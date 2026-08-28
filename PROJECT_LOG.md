@@ -37,7 +37,7 @@
 | Module | Status | Description |
 |---|---|---|
 | `src/App.tsx` | Done (iteration 3) | Root component — renders `<Navbar />`, `<Hero />`, and `<Intro />` |
-| `src/components/Navbar.tsx` | Done (iteration 2) | Left-aligned transparent glassmorphic pill nav with links ("About me", "View my projects", "Get in touch") |
+| `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support |
 | `src/components/Hero.tsx` | Done (iteration 4) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA |
 | `src/components/Intro.tsx` | Done (iteration 2) | White "intro of me" section with `id="about"` anchor — big title, italic paragraphs; parallax slides up and covers hero |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
@@ -173,6 +173,18 @@
   - Left-aligned the navigation bar container (`justify-content: flex-start`, padding `0 2.5rem`, top `1.5rem`).
   - Applied the transparent glass design (`var(--surface-glass)`, `backdrop-filter: blur(10px)`, border `1px solid rgba(255, 255, 255, 0.3)`) so the background remains visible through it.
   - Retained navigation links: "About me", "View my projects", "Get in touch".
+- **Build verified:** `bun run build` OK (35 modules), `tsc --noEmit` passes cleanly.
+
+## Changelog / Build Log
+
+### 2026-08-29 — Session 10: Scroll-synced morphing Navbar (Full extended bar in Hero -> 3-line circle on scroll)
+
+- **Scroll-synced Navbar morphing (`src/components/Navbar.tsx` & `src/index.css`):**
+  - Hero state (top of page): Navbar is in full extended view displaying all navigation links ("About me", "View my projects", "Get in touch") inside the translucent glass pill.
+  - Scrolled state: As the user scrolls down, the navbar smoothly collapses into a 48px circular glass button containing 3 horizontal lines (hamburger icon).
+  - Return to Hero: Scrolling back up to the Hero section seamlessly re-extends the navbar back into full display.
+  - Interactive menu in collapsed state: Clicking the collapsed circular button opens a floating glass dropdown menu with the navigation links, and morphs the 3 hamburger lines into a close 'X'. Clicking a link or clicking outside smoothly closes the dropdown.
+  - Added full responsive support for mobile screens.
 - **Build verified:** `bun run build` OK (35 modules), `tsc --noEmit` passes cleanly.
 
 ## Discussion Notes

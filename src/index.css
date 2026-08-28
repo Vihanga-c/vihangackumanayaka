@@ -55,28 +55,79 @@ html {
   animation: hero-in 0.7s var(--ease) both;
 }
 
-.navbar-glass {
+.navbar-container {
+  position: relative;
   pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.navbar-glass {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  width: auto;
-  max-width: fit-content;
-  padding: 0.45rem 0.55rem;
-  border-radius: var(--radius-md);
+  justify-content: center;
   background: var(--surface-glass);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: var(--shadow-secondary);
-  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
-    box-shadow 0.3s var(--ease);
+  transition: width 0.4s var(--ease), height 0.4s var(--ease),
+    padding 0.4s var(--ease), border-radius 0.4s var(--ease),
+    background 0.3s var(--ease), border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease), transform 0.2s var(--ease);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-.navbar-wrapper.scrolled .navbar-glass {
-  background: rgba(20, 8, 40, 0.65);
-  border-color: rgba(255, 255, 255, 0.38);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+/* Extended State (Hero view) */
+.navbar-glass.extended {
+  height: 48px;
+  border-radius: var(--radius-md);
+  padding: 0.35rem 0.45rem;
+  width: auto;
+  max-width: 520px;
+}
+
+/* Collapsed State (Scrolled view) */
+.navbar-glass.collapsed {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(20, 8, 40, 0.6);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.navbar-glass.collapsed:hover {
+  transform: scale(1.06);
+  filter: brightness(1.15);
+  background: rgba(28, 12, 54, 0.75);
+}
+
+/* Links container in extended state */
+.navbar-links-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 1;
+  max-width: 500px;
+  transform: translateX(0);
+  transition: opacity 0.25s var(--ease), max-width 0.4s var(--ease),
+    transform 0.3s var(--ease);
+  white-space: nowrap;
+}
+
+.navbar-glass.collapsed .navbar-links-group {
+  opacity: 0;
+  max-width: 0;
+  transform: translateX(-15px);
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .nav-link {
@@ -95,6 +146,98 @@ html {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.15);
   filter: brightness(1.1);
+}
+
+/* Hamburger toggle for collapsed circle */
+.hamburger-toggle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.6);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.navbar-glass.collapsed .hamburger-toggle {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.hamburger-line {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  transform-origin: center;
+}
+
+/* Morph hamburger into 'X' when open in collapsed state */
+.navbar-glass.menu-open .hamburger-line.line-1 {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.navbar-glass.menu-open .hamburger-line.line-2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.navbar-glass.menu-open .hamburger-line.line-3 {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Floating Glass Dropdown Menu when collapsed & open */
+.navbar-dropdown {
+  position: absolute;
+  top: calc(100% + 0.65rem);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.55rem;
+  border-radius: var(--radius-sm);
+  background: rgba(18, 8, 38, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  animation: dropdown-in 0.25s var(--ease) both;
+  min-width: 190px;
+  z-index: 101;
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.nav-dropdown-link {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.6rem 0.95rem;
+  border-radius: 8px;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+  white-space: nowrap;
+}
+
+.nav-dropdown-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
 }
 
 .hero {
@@ -250,9 +393,28 @@ html {
     padding: 0 1rem;
     justify-content: flex-start;
   }
-  .navbar-glass {
-    gap: 0.2rem;
-    padding: 0.35rem 0.4rem;
+  .navbar-glass.extended {
+    height: 42px;
+    padding: 0.25rem 0.35rem;
+  }
+  .navbar-glass.collapsed {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+  }
+  .hamburger-toggle {
+    width: 42px;
+    height: 42px;
+    gap: 3.5px;
+  }
+  .hamburger-line {
+    width: 16px;
+  }
+  .navbar-glass.menu-open .hamburger-line.line-1 {
+    transform: translateY(5.5px) rotate(45deg);
+  }
+  .navbar-glass.menu-open .hamburger-line.line-3 {
+    transform: translateY(-5.5px) rotate(-45deg);
   }
   .nav-link {
     font-size: 0.8125rem;
