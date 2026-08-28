@@ -61,6 +61,19 @@
 
 ## Changelog / Build Log
 
+### 2026-08-29 — Session 7: Vercel deployment fixes
+
+- First Vercel deployment failed with two errors:
+  1. `Unknown lockfile version` — Vercel's build machine used Bun 1.3.14, which cannot parse the `bun.lock` written by local Bun 1.4.0 (`lockfileVersion: 2`).
+  2. `No Output Directory named "public"` — build outputs to `dist/`, but Vercel defaults to `public/`.
+- **Fixes:**
+  - `package.json`: added `"packageManager": "bun@1.4.0"` so Vercel installs and uses the matching Bun version.
+  - Created `vercel.json` with `"buildCommand": "bun run build"` and `"outputDirectory": "dist"`.
+- **Build verified:** `bun run build` OK (35 modules).
+- Commit: vercel config + packageManager pin pushed to GitHub.
+
+## Changelog / Build Log
+
 ### 2026-08-27 — Session 1: Project setup & workflow
 
 - Repo already had initial commit `78b61dc` ("first commit") with the default Bun + React template pushed to GitHub.
