@@ -187,6 +187,18 @@
   - Added full responsive support for mobile screens.
 - **Build verified:** `bun run build` OK (35 modules), `tsc --noEmit` passes cleanly.
 
+## Changelog / Build Log
+
+### 2026-08-29 — Session 11: Smoother and relaxed Navbar collapse motion
+
+- **Animation timing & curves (`src/index.css`):**
+  - Added `--ease-smooth: cubic-bezier(0.16, 1, 0.3, 1)` for smooth easing curves.
+  - Increased pill-to-circle morph duration from 0.4s to 0.75s for a more relaxed and graceful feel.
+  - Added staggered transition delays on links (fading out smoothly before closing, revealing with a gentle delay when expanding) and hamburger icon (subtly rotating and scaling into place).
+- **Scroll hysteresis (`src/components/Navbar.tsx`):**
+  - Added hysteresis trigger thresholds (collapses past 80px, expands back under 40px) to prevent flickering near the hero scroll boundary.
+- **Build verified:** `bun run build` OK (35 modules), `tsc --noEmit` passes cleanly.
+
 ## Discussion Notes
 
 - Portfolio goal (2026-08-27): showcase Engineering Projects and professional expertise to potential employers.

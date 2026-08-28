@@ -11,11 +11,15 @@ export function Navbar() {
       if (raf === 0) {
         raf = requestAnimationFrame(() => {
           raf = 0;
-          const isScrolled = window.scrollY > 60;
-          setCollapsed(isScrolled);
-          if (!isScrolled) {
-            setMenuOpen(false);
-          }
+          const scrollY = window.scrollY;
+          setCollapsed((prev) => {
+            if (scrollY > 80) return true;
+            if (scrollY < 40) {
+              setMenuOpen(false);
+              return false;
+            }
+            return prev;
+          });
         });
       }
     };
