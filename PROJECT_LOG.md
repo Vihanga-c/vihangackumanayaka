@@ -36,9 +36,10 @@
 
 | Module | Status | Description |
 |---|---|---|
-| `src/App.tsx` | Done (iteration 2) | Root component — renders `<Hero />` |
-| `src/components/Hero.tsx` | Done (iteration 3) | Hero landing page: full-viewport Grainient background + name, subtitle, and 4 CTAs ("Introduction", "View Projects", "Get in Touch", "Get my CV"); respects `prefers-reduced-motion`; parallax cover motion |
-| `src/components/Intro.tsx` | Done (iteration 2) | White "intro of me" section with `id="intro"` anchor — big title, italic paragraphs; parallax slides up and covers hero |
+| `src/App.tsx` | Done (iteration 3) | Root component — renders `<Navbar />`, `<Hero />`, and `<Intro />` |
+| `src/components/Navbar.tsx` | Done | Floating glassmorphic header with navigation links ("About me", "View my projects", "Get in touch") and scroll blur transition |
+| `src/components/Hero.tsx` | Done (iteration 4) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA |
+| `src/components/Intro.tsx` | Done (iteration 2) | White "intro of me" section with `id="about"` anchor — big title, italic paragraphs; parallax slides up and covers hero |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
 | `components.json` | Created manually | shadcn config (`style: base-nova`, aliases `@/*` → `./src/*`) |
 | `src/frontend.tsx` | Done | React entry point — mounts `<App />` into `#root` with StrictMode + HMR support |
@@ -146,6 +147,22 @@
   - Refined button padding (`0.85rem 1.6rem`), font size (`0.95rem`), and added `white-space: nowrap` to prevent awkward wrapping of button labels.
   - Adjusted button and gap scaling in mobile media query.
 - **Build verified:** `bun run build` OK (34 modules), `tsc --noEmit` passes cleanly.
+
+## Changelog / Build Log
+
+### 2026-08-29 — Session 8: Added Glass Navbar & simplified Hero to single "Get my CV" button
+
+- **New Glass Navbar (`src/components/Navbar.tsx`, `src/App.tsx`, `src/index.css`):**
+  - Built a floating glassmorphism navigation bar anchored at the top of the viewport (`z-index: 100`).
+  - Styled with translucent dark tint (`rgba(18, 8, 36, 0.62)`), `backdrop-filter: blur(14px) saturate(180%)`, crisp border, subtle inner glow, and smooth scroll state background transition.
+  - Links included: "About me" (`#about`), "View my projects" (`#projects`), and "Get in touch" (`#contact`).
+  - Added responsive styling for mobile viewports.
+- **Hero CTAs simplified (`src/components/Hero.tsx`):**
+  - Removed "Introduction", "View Projects", and "Get in Touch" from the hero actions.
+  - Kept only "Get my CV" with the translucent glass button styling.
+- **Anchor IDs updated (`src/components/Intro.tsx`):**
+  - Updated section anchor to `id="about"` to support "About me" navigation link.
+- **Build verified:** `bun run build` OK (35 modules), `tsc --noEmit` passes cleanly.
 
 ## Discussion Notes
 

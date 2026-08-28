@@ -1,13 +1,17 @@
 import { Hero } from "./components/Hero";
 import { Intro } from "./components/Intro";
+import { Navbar } from "./components/Navbar";
 import "./index.css";
 
 export function App() {
   return (
-    <main>
-      <Hero />
-      <Intro />
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <Intro />
+      </main>
+    </>
   );
 }
 

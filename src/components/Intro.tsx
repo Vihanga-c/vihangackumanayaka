@@ -39,7 +39,7 @@ export function Intro() {
   return (
     <section
       ref={sectionRef}
-      id="intro"
+      id="about"
       className="intro"
       aria-labelledby="intro-title"
     >
