@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import introImage from "../assets/intro-profile.jpg";
 
 const PLACEHOLDER_PARAGRAPHS = [
   "Velocities collide with gradients wherever systems learn to hum, and between static laws and dynamic dreams the machinery of intent keeps turning. Resilience polishes friction into torque, while iterative discipline converts scattered sketches into shipping artifacts.",
@@ -43,15 +44,27 @@ export function Intro() {
       className="intro"
       aria-labelledby="intro-title"
     >
-      <div className="intro-content">
-        <h2 id="intro-title" className="intro-title">
-          intro of me
-        </h2>
-        {PLACEHOLDER_PARAGRAPHS.map((text, i) => (
-          <p key={i} className="intro-text">
-            {text}
-          </p>
-        ))}
+      <div className="intro-container">
+        <div className="intro-content">
+          <h2 id="intro-title" className="intro-title">
+            intro of me
+          </h2>
+          {PLACEHOLDER_PARAGRAPHS.map((text, i) => (
+            <p key={i} className="intro-text">
+              {text}
+            </p>
+          ))}
+        </div>
+        <div className="intro-image-wrapper">
+          <div className="intro-image-tile">
+            <img
+              src={introImage}
+              alt="Vihanga C. Kumanayaka introduction showcase"
+              className="intro-image"
+              loading="lazy"
+            />
+          </div>
+        </div>
       </div>
     </section>
   );

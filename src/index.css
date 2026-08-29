@@ -376,11 +376,21 @@ html {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 14vh 4rem;
+  padding: 12vh 4rem 14vh;
   will-change: transform;
 }
 
+.intro-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1680px;
+  gap: clamp(2rem, 4vw, 5rem);
+}
+
 .intro-content {
+  flex: 1 1 480px;
   max-width: 58ch;
   text-align: left;
 }
@@ -399,6 +409,64 @@ html {
   font-style: italic;
   line-height: 1.75;
   color: #1a1a1a;
+}
+
+.intro-image-wrapper {
+  flex: 0 1 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: auto;
+}
+
+.intro-image-tile {
+  height: clamp(320px, 72vh, 660px);
+  aspect-ratio: 4 / 3;
+  width: auto;
+  max-width: 52vw;
+  border-radius: 28px;
+  border: 6px solid #000000;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: #000000;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.1);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.intro-image-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.16);
+}
+
+.intro-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@media (max-width: 1100px) {
+  .intro-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
+  .intro-image-wrapper {
+    width: 100%;
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+
+  .intro-image-tile {
+    width: 100%;
+    max-width: 620px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-width: 5px;
+    border-radius: 22px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -445,7 +513,11 @@ html {
     font-size: 0.875rem;
   }
   .intro {
-    padding: 10vh 1.5rem;
+    padding: 8vh 1.5rem 12vh;
+  }
+  .intro-image-tile {
+    border-width: 4px;
+    border-radius: 16px;
   }
 }
 

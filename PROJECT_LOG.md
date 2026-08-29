@@ -39,7 +39,7 @@
 | `src/App.tsx` | Done (iteration 3) | Root component — renders `<Navbar />`, `<Hero />`, and `<Intro />` |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support |
 | `src/components/Hero.tsx` | Done (iteration 4) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA |
-| `src/components/Intro.tsx` | Done (iteration 2) | White "intro of me" section with `id="about"` anchor — big title, italic paragraphs; parallax slides up and covers hero |
+| `src/components/Intro.tsx` | Done (iteration 3) | White "intro of me" section with `id="about"` anchor — title, paragraphs, and 4:3 right-aligned image tile with rounded corners & thick black border; parallax slides up and covers hero |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
 | `components.json` | Created manually | shadcn config (`style: base-nova`, aliases `@/*` → `./src/*`) |
 | `src/frontend.tsx` | Done | React entry point — mounts `<App />` into `#root` with StrictMode + HMR support |
@@ -212,6 +212,25 @@
 - **Scroll hysteresis (`src/components/Navbar.tsx`):**
   - Added hysteresis trigger thresholds (collapses past 80px, expands back under 40px) to prevent flickering near the hero scroll boundary.
 - **Build verified:** `bun run build` OK (35 modules), `tsc --noEmit` passes cleanly.
+
+## Changelog / Build Log
+
+### 2026-08-30 — Session 12: Added 4:3 right-aligned image tile with rounded corners and thick black border to Intro section
+
+- **Intro layout updated (`src/components/Intro.tsx`):**
+  - Restructured `<section className="intro">` with `.intro-container` housing both the textual intro on the left and a dedicated `.intro-image-wrapper` on the right.
+  - Linked engineering showcase image asset (`src/assets/intro-profile.jpg`).
+  - Maintained parallax scroll lockstep with the intro section.
+- **Image tile styling (`src/index.css`):**
+  - Styled `.intro-image-tile` with strict `aspect-ratio: 4 / 3;`.
+  - Configured vertical height taking the viewport view in the intro section (`height: clamp(320px, 72vh, 660px)`).
+  - Applied rounded corners (`border-radius: 28px; overflow: hidden;`).
+  - Added thick black border (`border: 6px solid #000000;`).
+  - Added smooth hover lift and elevation shadows (`box-shadow: 0 20px 48px rgba(0, 0, 0, 0.1)`).
+  - Added full responsive support for tablet and mobile breakpoints (`@media (max-width: 1100px)` and `@media (max-width: 640px)`).
+- **Asset handling & TypeScript declarations (`bun-env.d.ts`):**
+  - Added image module declarations (`*.jpg`, `*.png`, `*.webp`, `*.jpeg`) for clean imports.
+- **Build verified:** `bun run build` OK (36 modules, image asset bundled), `tsc --noEmit` passes with 0 errors.
 
 ## Discussion Notes
 
