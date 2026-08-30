@@ -36,10 +36,13 @@
 
 | Module | Status | Description |
 |---|---|---|
-| `src/App.tsx` | Done (iteration 3) | Root component — renders `<Navbar />`, `<Hero />`, and `<Intro />` |
-| `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support |
+| `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
+| `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
 | `src/components/Hero.tsx` | Done (iteration 4) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA |
 | `src/components/Intro.tsx` | Done (iteration 3) | White "intro of me" section with `id="about"` anchor — title, paragraphs, and 4:3 right-aligned image tile with rounded corners & thick black border; parallax slides up and covers hero |
+| `src/components/Projects.tsx` | Done (iteration 1) | "My Projects" section (`id="projects"`) — 8 expandable image tiles in a 3-per-row grid, gradient-backed expand bodies, "Explore Project" arrow into ProjectDetail, parallax cover (1.45×) over Intro |
+| `src/components/ProjectDetail.tsx` | Done | Full-page project detail view with hero, meta, tags, gallery, specs, and prev/next footer nav |
+| `src/components/Contact.tsx` | Done (iteration 1) | White "Contact Me" section (`id="contact"`) after Projects — large left-aligned title, contact methods in 2 rows (Mobile/Email row 1, centered LinkedIn row 2), parallax cover (1.6×) |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
 | `components.json` | Created manually | shadcn config (`style: base-nova`, aliases `@/*` → `./src/*`) |
 | `src/frontend.tsx` | Done | React entry point — mounts `<App />` into `#root` with StrictMode + HMR support |
@@ -263,6 +266,20 @@
 
 **Build verified:** `bun run build` OK (52 modules, 0.47 MB JS). `bun tsc --noEmit` passes cleanly with 0 errors.
 **Committed:** `develop` branch — commit `4478730`.
+
+## Changelog / Build Log
+
+### 2026-08-30 — Session 14: Contact Me section + working navbar anchors
+
+- **New module `src/components/Contact.tsx`:**
+  - White `#contact` section rendered after the Projects section (`src/App.tsx`), completing the parallax cover chain (Hero → Intro → Projects → Contact) with the same rAF `translateY` pattern at `RATE = 1.6` and `z-index: 3`.
+  - Large left-aligned "Contact Me" title (clamp 3rem–6.5rem, weight 800, matching the intro title style).
+  - Contact methods laid out 2 rows: **Mobile Phone** and **Email** in row 1, **LinkedIn** in row 2 horizontally centered between them (3-column CSS grid; method label on top, clickable link right underneath).
+  - Placeholder values for now: `+94 71 234 5678` (`tel:`), `vihanga.kumanayaka@example.com` (`mailto:`), `linkedin.com/in/vihanga-kumanayaka` (`https://`).
+- **Navbar links now resolve to real sections (`src/components/Navbar.tsx`):**
+  - "About me" → `#about` (Intro section), "View my projects" → `#projects` (Projects section), "Get in touch" → `#contact` (new Contact section) — both in the extended pill and the collapsed dropdown menu.
+- **Styling (`src/index.css`):** added `.contact-section`, `.contact-inner`, `.contact-title`, `.contact-methods`, `.contact-method` (+ `.mobile`/`.email`/`.linkedin` grid placement), `.contact-method-label`, `.contact-method-link` (accent hover underline); responsive breakpoints at 1100px and 640px (mobile stacks, LinkedIn stays centered).
+- **Build verified:** `bun run build` OK (53 modules, 0.48 MB JS), `bun tsc --noEmit` passes cleanly.
 
 ## Discussion Notes
 

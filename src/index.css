@@ -812,6 +812,120 @@ html {
 }
 
 /* ═══════════════════════════════════════════════
+   CONTACT SECTION
+════════════════════════════════════════════════ */
+.contact-section {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #0a0a0a;
+  padding: 14vh 4rem 16vh;
+  will-change: transform;
+}
+
+.contact-inner {
+  max-width: 1380px;
+  margin: 0 auto;
+}
+
+.contact-title {
+  margin: 0 0 4rem;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+
+.contact-methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  row-gap: 4rem;
+}
+
+.contact-method {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.contact-method.mobile {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.contact-method.email {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.contact-method.linkedin {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.contact-method-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b6b76;
+}
+
+.contact-method-link {
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  font-weight: 700;
+  color: #0a0a0a;
+  text-decoration: none;
+  padding-bottom: 0.15rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.contact-method-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 1100px) {
+  .contact-section {
+    padding: 10vh 2.5rem 12vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-section {
+    padding: 10vh 1.5rem 12vh;
+  }
+  .contact-title {
+    font-size: 2.6rem;
+    margin-bottom: 3rem;
+  }
+  .contact-methods {
+    grid-template-columns: 1fr;
+    row-gap: 2.5rem;
+  }
+  .contact-method.mobile,
+  .contact-method.email,
+  .contact-method.linkedin {
+    grid-column: 1;
+  }
+  .contact-method.mobile,
+  .contact-method.email {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .contact-method.linkedin {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* ═══════════════════════════════════════════════
    PROJECT DETAIL FULL-PAGE VIEW
 ════════════════════════════════════════════════ */
 .project-detail-view {
