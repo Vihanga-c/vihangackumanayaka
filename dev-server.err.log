@@ -1,0 +1,2 @@
+$ bun --hot src/index.ts
+Bundled page in 99ms: src/index.html
