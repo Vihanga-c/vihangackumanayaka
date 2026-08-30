@@ -232,14 +232,47 @@
   - Added image module declarations (`*.jpg`, `*.png`, `*.webp`, `*.jpeg`) for clean imports.
 - **Build verified:** `bun run build` OK (36 modules, image asset bundled), `tsc --noEmit` passes with 0 errors.
 
+## Changelog / Build Log
+
+### 2026-08-30 — Session 13: My Projects section + parallax + expandable tiles + ProjectDetail page
+
+**New files created:**
+- `src/components/Projects.tsx` — "My Projects" section component:
+  - 8 project tiles displayed in a responsive 3-per-row CSS grid (`repeat(3, 1fr)`).
+  - Each tile shows a full-bleed image with a dark gradient scrim, project title at the bottom-left, and a circular `+` button (bottom-right).
+  - Clicking `+` toggles the tile into **expanded state** — the expand body slides in below the image via `expand-in` keyframe animation.
+  - Expanded state applies the project's `gradientBackdrop` (a `radial-gradient` extracted from `projectsData.ts`) as a CSS custom property `--tile-gradient` on the tile's `background`, giving each expansion a unique colour derived from the project's image palette.
+  - An **arrow button** ("Explore Project") appears in the expanded body with accent-coloured hover glow and a rightward slide animation — clicking it invokes `onViewDetails(project.id)`.
+  - Parallax scroll effect: identical rAF + `translateY` pattern as `Intro.tsx`, with `RATE = 1.45` (faster than Intro's 1.2×) so it slides up and covers the Intro section as the user scrolls.
+- `src/data/projectsData.ts` — 8 real engineering projects with full detail data (already existed from a prior session).
+- `src/components/ProjectDetail.tsx` — full-page project detail view (already existed from a prior session).
+- `src/components/ProjectModal.tsx` — project modal component (already existed, unused — kept for reference).
+
+**Modified files:**
+- `src/App.tsx` — now manages a `activeProjectId: string | null` state:
+  - When `null`, renders the normal portfolio layout (`Navbar` + `Hero` + `Intro` + `Projects`).
+  - When a project ID is active, renders `<ProjectDetail>` full-screen. "Back" returns to portfolio and smooth-scrolls to `#projects`.
+- `src/components/ProjectDetail.tsx` — fixed pre-existing TS18048 errors (`prevProject`/`nextProject` possibly undefined) by adding non-null assertions with fallback logic.
+- `src/index.css` — appended ~450 lines of new CSS:
+  - `.projects-section`, `.projects-inner`, `.projects-header`, `.projects-title`, `.projects-subtitle`, `.projects-grid`
+  - `.project-tile` (collapsed), `.project-tile-image-wrap`, `.project-tile-img`, `.project-tile-overlay`, `.project-tile-bottom`, `.project-tile-name`, `.project-tile-plus`
+  - `.project-tile--expanded`, `.project-tile-expand-body`, `.project-tile-expand-title`, `.project-tile-expand-text`, `.project-tile-expand-desc`
+  - `.project-tile-arrow`, `.project-tile-arrow-label`, `.project-tile-arrow-icon`
+  - All project detail page styles: `.project-detail-view`, `.project-detail-nav`, `.project-back-btn`, `.project-detail-hero`, `.project-detail-badge`, `.project-detail-title`, `.project-detail-subtitle`, `.project-meta-grid`, `.project-tags-list`, `.project-tag-pill`, gallery, specs grid, bullet lists, footer nav
+  - Responsive breakpoints at 1100px and 640px for both the grid and detail page.
+
+**Build verified:** `bun run build` OK (52 modules, 0.47 MB JS). `bun tsc --noEmit` passes cleanly with 0 errors.
+**Committed:** `develop` branch — commit `4478730`.
+
 ## Discussion Notes
 
 - Portfolio goal (2026-08-27): showcase Engineering Projects and professional expertise to potential employers.
 - The default template UI (Bun + React boilerplate) is expected to be replaced by actual portfolio content in future sessions.
-- No portfolio content (projects, expertise sections) has been defined yet — awaiting owner input.
+- No portfolio content (projects, expertise sections, about section) has been defined yet — awaiting owner input.
 
 ## Next Steps (not yet started)
 
-- Define portfolio content: projects list, expertise/skills sections, about section.
-- Design system: replace template CSS with a branded portfolio theme (use `frontend-design` skill).
-- Wire up modules/features as agreed with the owner.
+- Add a real portrait/profile image to the Intro section.
+- Fill in real project descriptions, images, and content in `projectsData.ts`.
+- Add a Contact section (`id="contact"`).
+- Add CV download functionality (`id="cv"`).
