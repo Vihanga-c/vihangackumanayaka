@@ -1,12 +1,33 @@
 import { useEffect, useRef, useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
+import { scrollToSection } from "../lib/scrollToSection";
+
+const NAV_ITEMS = [
+  { id: "about", label: "About me" },
+  { id: "projects", label: "View my projects" },
+  { id: "contact", label: "Get in touch" },
+] as const;
+
+type SectionId = (typeof NAV_ITEMS)[number]["id"];
 
 export function Navbar() {
   const [collapsed, setCollapsed] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<SectionId | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let raf = 0;
+    const updateActive = () => {
+      const threshold = window.innerHeight * 0.45;
+      let current: SectionId | null = null;
+      for (const { id } of NAV_ITEMS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= threshold) current = id;
+      }
+      setActiveSection(current);
+    };
+
     const handleScroll = () => {
       if (raf === 0) {
         raf = requestAnimationFrame(() => {
@@ -20,14 +41,17 @@ export function Navbar() {
             }
             return prev;
           });
+          updateActive();
         });
       }
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
@@ -52,8 +76,10 @@ export function Navbar() {
     }
   };
 
-  const handleLinkClick = () => {
+  const handleNavClick = (e: ReactMouseEvent, id: string) => {
+    e.preventDefault();
     setMenuOpen(false);
+    scrollToSection(id);
   };
 
   return (
@@ -81,15 +107,19 @@ export function Navbar() {
         >
           {/* Extended links for Hero view */}
           <div className="navbar-links-group" aria-hidden={collapsed}>
-            <a href="#about" className="nav-link" onClick={handleLinkClick}>
-              About me
-            </a>
-            <a href="#projects" className="nav-link" onClick={handleLinkClick}>
-              View my projects
-            </a>
-            <a href="#contact" className="nav-link" onClick={handleLinkClick}>
-              Get in touch
-            </a>
+            {NAV_ITEMS.map(({ id, label }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={`nav-link ${
+                  activeSection === id ? "active" : ""
+                }`}
+                aria-current={activeSection === id ? "true" : undefined}
+                onClick={(e) => handleNavClick(e, id)}
+              >
+                {label}
+              </a>
+            ))}
           </div>
 
           {/* 3-line hamburger icon when collapsed */}
@@ -103,30 +133,20 @@ export function Navbar() {
         {/* Floating glass dropdown menu when collapsed & opened */}
         {collapsed && menuOpen && (
           <div className="navbar-dropdown" role="menu">
-            <a
-              href="#about"
-              className="nav-dropdown-link"
-              role="menuitem"
-              onClick={handleLinkClick}
-            >
-              About me
-            </a>
-            <a
-              href="#projects"
-              className="nav-dropdown-link"
-              role="menuitem"
-              onClick={handleLinkClick}
-            >
-              View my projects
-            </a>
-            <a
-              href="#contact"
-              className="nav-dropdown-link"
-              role="menuitem"
-              onClick={handleLinkClick}
-            >
-              Get in touch
-            </a>
+            {NAV_ITEMS.map(({ id, label }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={`nav-dropdown-link ${
+                  activeSection === id ? "active" : ""
+                }`}
+                role="menuitem"
+                aria-current={activeSection === id ? "true" : undefined}
+                onClick={(e) => handleNavClick(e, id)}
+              >
+                {label}
+              </a>
+            ))}
           </div>
         )}
       </div>

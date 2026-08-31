@@ -6,6 +6,7 @@ import { Projects } from "./components/Projects";
 import { Contact } from "./components/Contact";
 import { ProjectDetail } from "./components/ProjectDetail";
 import { PROJECTS } from "./data/projectsData";
+import { scrollToSection } from "./lib/scrollToSection";
 import "./index.css";
 
 export function App() {
@@ -24,10 +25,7 @@ export function App() {
         onBack={() => {
           setActiveProjectId(null);
           // Restore scroll position to projects section after a frame
-          requestAnimationFrame(() => {
-            const el = document.getElementById("projects");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          });
+          requestAnimationFrame(() => scrollToSection("projects"));
         }}
         onSelectOtherProject={(id) => setActiveProjectId(id)}
       />

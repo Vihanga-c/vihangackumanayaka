@@ -65,6 +65,20 @@
 
 ## Changelog / Build Log
 
+### 2026-08-31 — Session 15: Parallax-aware navbar scrolling + active-section highlighting
+
+- **Root cause of broken nav links:** every section uses a parallax transform (`translateY(-scrollY * RATE)`: Intro 1.2×, Projects 1.45×, Contact 1.6×), so native anchor jumps (`href="#about"` etc.) targeted the *untransformed* layout position and landed far from the section. Verified in headless Chromium: a section's visual top at scroll `y` is `layoutTop - (RATE + 1) * y`.
+- **New module `src/lib/scrollToSection.ts`:** parallax-aware smooth scroll helper. Recomputes the section's transform-invariant layout top from its live rect, then scrolls to `layoutTop / (RATE + 1)` so the section's beginning lands exactly at the top of the viewport (clamped to max scroll; falls back to plain layout top under `prefers-reduced-motion`, where no transform exists).
+- **`src/components/Navbar.tsx`:**
+  - Extended pill links and collapsed dropdown links now call `scrollToSection` (preventDefault), in both the hero pill and the floating dropdown.
+  - Added active-section tracking: on scroll (rAF) it finds the last section whose visual top is above 45% of the viewport and highlights the matching link in the dropdown (and pill, when visible) with an accent `.active` style + `aria-current`.
+- **`src/App.tsx`:** ProjectDetail "Back" button now uses `scrollToSection("projects")` instead of `scrollIntoView` (same parallax bug).
+- **`src/index.css`:** added `.nav-link.active` and `.nav-dropdown-link.active` accent highlight styles.
+- **E2E verified (Playwright, headless Chromium, 1280×800):** clicking every link in both pill and dropdown lands `#about` / `#projects` / `#contact` at viewport top (±1px); dropdown highlights `contact` when viewing about/projects areas and at page bottom.
+- **Build verified:** `bun run build` OK (54 modules), `bun tsc --noEmit` passes cleanly.
+
+## Changelog / Build Log
+
 ### 2026-08-29 — Session 7: Vercel deployment fixes
 
 - First Vercel deployment failed with two errors:

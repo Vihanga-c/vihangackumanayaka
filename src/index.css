@@ -159,6 +159,12 @@ html {
   filter: brightness(1.1);
 }
 
+.nav-link.active {
+  color: #ffffff;
+  background: rgba(255, 159, 252, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
 /* Hamburger toggle for collapsed circle */
 .hamburger-toggle {
   position: absolute;
@@ -252,6 +258,12 @@ html {
 .nav-dropdown-link:hover {
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
+}
+
+.nav-dropdown-link.active {
+  background: rgba(255, 159, 252, 0.28);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
 
 .hero {
