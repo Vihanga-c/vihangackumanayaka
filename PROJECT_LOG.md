@@ -38,8 +38,9 @@
 |---|---|---|
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
-| `src/components/Hero.tsx` | Done (iteration 4) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA |
-| `src/components/Intro.tsx` | Done (iteration 3) | White "intro of me" section with `id="about"` anchor — title, paragraphs, and 4:3 right-aligned image tile with rounded corners & thick black border; parallax slides up and covers hero |
+| `src/components/Hero.tsx` | Done (iteration 5) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA; parallax now applied synchronously on scroll (no rAF lag) |
+| `src/components/Intro.tsx` | Done (iteration 5) | White "intro of me" section with `id="about"` anchor — title, paragraphs, and 4:3 right-aligned image tile with rounded corners & thick black border; parallax sweeps up (1.2×), decelerates smoothly, then scrolls away naturally at 1× — applied synchronously, never frozen, never overshoots |
+| `src/lib/scrollToSection.ts` | Done (iteration 2) | Parallax-aware smooth scroll helper — measures the transform-invariant layout top by neutralizing the inline transform, so nav links land the section top exactly at the viewport top from any scroll position |
 | `src/components/Projects.tsx` | Done (iteration 1) | "My Projects" section (`id="projects"`) — 8 expandable image tiles in a 3-per-row grid, gradient-backed expand bodies, "Explore Project" arrow into ProjectDetail, parallax cover (1.45×) over Intro |
 | `src/components/ProjectDetail.tsx` | Done | Full-page project detail view with hero, meta, tags, gallery, specs, and prev/next footer nav |
 | `src/components/Contact.tsx` | Done (iteration 1) | White "Contact Me" section (`id="contact"`) after Projects — large left-aligned title, contact methods in 2 rows (Mobile/Email row 1, centered LinkedIn row 2), parallax cover (1.6×) |
@@ -62,6 +63,20 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-01 — Session 16: Smooth hero→intro transition, exact nav landing, title descender crop fix
+
+- **Root cause of scroll jolt/stuck:** the intro's parallax clamp ("pin") froze its content for ~437px of scroll once its top hit the viewport top (content didn't move while the user kept scrolling → "stuck"), and the rAF-throttled transform lagged one wheel-notch behind fast scrolls, letting the intro overshoot ~112px past the viewport top then snap back ("jolts up and down"). Reproduced in headless Chromium via wheel-event + rAF sampling.
+- **`src/components/Intro.tsx` (iteration 5):** replaced the pin-clamp with a smooth saturation shift — `shift(y) = RATE·y` while covering (1.2×), a C¹-continuous smoothstep deceleration into `RATE·T` (T = layoutTop/(RATE+1), the scroll position where the intro's visual top lands exactly at the viewport top), after which the intro scrolls away naturally at 1×. The transform is now applied **synchronously in the scroll handler** (layoutTop cached, measured on mount/resize) so it always matches the current scroll position — no rAF lag, no overshoot, no frozen content.
+- **`src/components/Hero.tsx`:** parallax transform also applied synchronously (rAF removed) for consistent zero-lag tracking.
+- **`src/lib/scrollToSection.ts` (iteration 2):** root cause of the "About me lands mid-section" bug was recovering `layoutTop` as `rect.top + scrollY + rate·scrollY`, which is only valid while the transform is unclamped — from low page positions it overestimated the target by hundreds of px. Now the transform-invariant layout top is measured by briefly neutralizing the inline transform (restored synchronously, no repaint), so the target `layoutTop/(rate+1)` is exact from any scroll position. Also: `behavior: "auto"` under `prefers-reduced-motion`.
+- **`src/index.css`:** `.projects-title` `line-height: 1.05 → 1.2` — the gradient `background-clip: text` clipped the descenders of "y"/"j" ("My Projects"); the taller line box gives them room.
+- **`src/components/Contact.tsx`:** fixed pre-existing TS errors (TS2604/TS2786) from the earlier icon refactor (`Record<string, () => ReactNode>` → `ComponentType` + non-null index).
+- **E2E verified (Playwright, 1280×800):** continuous wheel scroll down and up shows monotonic scrollY (0 backward jolts) with the intro transform always matching scrollY exactly; intro top lands at 0 exactly at y=364 with the hero fully covered, then flows naturally at 1×. All nav links (About/Projects/Contact) land their section top at viewport top (±2px) from scroll positions 0, 1200, and page bottom. Title pixel analysis confirms descender ink renders to the bottom of the line box.
+- **Build verified:** `bun run build` OK; `bun tsc --noEmit` passes with 0 errors.
+- Note: this commit also includes the previously uncommitted working-tree changes (Projects/Contact parallax removed → static sections; SECTION_RATES updated; Intro pin-clamp added then replaced here).
 
 ## Changelog / Build Log
 

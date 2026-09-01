@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { PROJECTS } from "../data/projectsData";
 import type { Project } from "../data/projectsData";
 
@@ -7,36 +7,7 @@ interface ProjectsProps {
 }
 
 export function Projects({ onViewDetails }: ProjectsProps) {
-  const sectionRef = useRef<HTMLElement>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
-
-  // ── Parallax: same rAF pattern as Intro & Hero ───────────────────────────
-  // Projects slides up faster than Intro (1.45x vs 1.2x) so it covers it.
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const RATE = 1.45;
-    let raf = 0;
-
-    const update = () => {
-      raf = 0;
-      section.style.transform = `translateY(${window.scrollY * -RATE}px)`;
-    };
-    const onScroll = () => {
-      if (raf === 0) raf = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
 
   // Close on Escape
   useEffect(() => {
@@ -53,7 +24,6 @@ export function Projects({ onViewDetails }: ProjectsProps) {
 
   return (
     <section
-      ref={sectionRef}
       id="projects"
       className="projects-section"
       aria-labelledby="projects-title"

@@ -21,24 +21,20 @@ export function Hero() {
     // Hero is 100vh tall, page scroll range is 180vh (intro is 180vh):
     // hero fully exits exactly at max scroll -> rate = 100 / 180 = 0.556.
     // The intro (in flow, 1.2x) overtakes it, so relative speed = 0.644.
+    // Applied synchronously on every scroll event so it never lags the
+    // current scroll position.
     const RATE = 100 / 180;
 
-    let raf = 0;
     const update = () => {
-      raf = 0;
       section.style.transform = `translateY(${window.scrollY * -RATE}px)`;
-    };
-    const onScroll = () => {
-      if (raf === 0) raf = requestAnimationFrame(update);
     };
 
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
     };
   }, []);
 

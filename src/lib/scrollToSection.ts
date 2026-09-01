@@ -1,20 +1,23 @@
 // Parallax-aware smooth scrolling.
 //
-// Sections are moved by `translateY(-scrollY * RATE)` on every scroll frame, so
-// native anchor navigation (href="#...") targets the *untransformed* layout
-// position and lands in the wrong place. Instead, compute the scroll offset at
-// which the section's visual top sits exactly at the top of the viewport:
+// The intro section is moved by `translateY(-shift)` where the shift saturates
+// once the intro's visual top reaches the top of the viewport, so native
+// anchor navigation (href="#...") targets the *untransformed* layout position
+// and lands in the wrong place. Instead, compute the scroll offset at which
+// the section's visual top sits exactly at the top of the viewport:
 //
-//   visualTop(y) = layoutTop - RATE * y - y   (transform + scroll offset)
-//   visualTop(y) = 0  ->  y = layoutTop / (RATE + 1)
+//   moving section:   visualTop(y) = layoutTop - shift(y)  ->  y = layoutTop / (RATE + 1)
+//   static section:   visualTop(y) = layoutTop - y         ->  y = layoutTop
 //
-// layoutTop is the transform-invariant document position, recovered from the
-// current rect (rect.top + scrollY + RATE * scrollY).
+// layoutTop is the transform-invariant document position. For moving sections
+// it is measured by briefly neutralizing the inline parallax transform
+// (restored immediately — no repaint happens in between), so it stays correct
+// regardless of the current scroll position or clamp state.
 
 export const SECTION_RATES: Record<string, number> = {
-  about: 1.2, // Intro
-  projects: 1.45, // Projects
-  contact: 1.6, // Contact
+  about: 1.2, // Intro — only parallax section left
+  projects: 0, // static
+  contact: 0, // static
 };
 
 export function scrollToSection(
@@ -29,13 +32,21 @@ export function scrollToSection(
   ).matches;
   // Without motion the sections are never transformed, so no rate correction.
   const rate = reducedMotion ? 0 : SECTION_RATES[sectionId] ?? 0;
-  const rect = el.getBoundingClientRect();
-  const layoutTop = rect.top + window.scrollY + rate * window.scrollY;
+
+  let layoutTop: number;
+  if (rate > 0) {
+    const prevTransform = el.style.transform;
+    el.style.transform = "";
+    layoutTop = el.getBoundingClientRect().top + window.scrollY;
+    el.style.transform = prevTransform;
+  } else {
+    layoutTop = el.getBoundingClientRect().top + window.scrollY;
+  }
 
   const target = layoutTop / (rate + 1);
   const maxScroll =
     document.documentElement.scrollHeight - window.innerHeight;
   const clamped = Math.max(0, Math.min(target, maxScroll));
 
-  window.scrollTo({ top: clamped, behavior });
+  window.scrollTo({ top: clamped, behavior: reducedMotion ? "auto" : behavior });
 }
