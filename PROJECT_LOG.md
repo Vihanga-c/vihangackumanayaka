@@ -67,6 +67,24 @@
 
 ## Changelog / Build Log
 
+### 2026-09-07 — Session 32: Playwright E2E test suite (52 tests) + release prep
+
+- **New test infrastructure:**
+  - `@playwright/test` 1.63.0 installed as dev dependency (Chromium downloaded via `bunx playwright install chromium`).
+  - `playwright.config.ts` — two projects (desktop-chromium 1280×800, mobile-chromium Pixel 7), `webServer` auto-runs `bun run build` + the new static server.
+  - `scripts/serve-dist.ts` — small Bun static server for `dist/` with correct MIME types + SPA fallback (the `bun start` server falls through to SPA HTML for asset paths, so tests hit a Vercel-equivalent static serving).
+  - `tests/` — 6 spec files covering all functionality: hero (name/degree/tagline, CV download with %PDF content check), about (4 bio paragraphs, `"why ?"` quote, portrait ratio 3:4), projects (8 tiles, tags, keyboard + click → detail, back), project detail (badge/tags/sections, prev/next/wrap navigation, video media), navbar (extended→collapsed morph, dropdown, scroll-to-section, active highlight), contact (phone/email/LinkedIn hrefs).
+  - `package.json`: `test` / `test:e2e` / `serve-dist` scripts.
+  - `.gitignore`: `test-results`, `playwright-report`.
+- **Fix found by tests — CV download filename:** Chromium ignores the `download` attribute's filename and uses the hashed asset URL basename (`Vihanga-Chamodya-Kumanayaka-CV-7mm6vjc0.pdf`) when no server header is present. Fixed deterministically with `Content-Disposition: attachment; filename="Vihanga Chamodya Kumanayaka - CV.pdf"`:
+  - `vercel.json` — added production `headers` rule for `/Vihanga-Chamodya-Kumanayaka-CV-:hash.pdf`.
+  - `scripts/serve-dist.ts` — same header in the local test server.
+- **Test-only fixes (no app code changed):** shimmer alternation sampled over >2 toggle periods (a 1500ms window over the 1400ms interval can straddle two toggles), nav active-section test opens the dropdown first, category badge assertion uses exact element, DIYAKAWA video test clicks Next twice (Otter → Argo → DIYAKAWA).
+- **E2E result:** 52/52 passed (26 desktop + 26 mobile) in 35.4s.
+- **Build verified:** `bun tsc --noEmit` passes; `bun run build` OK (63 modules).
+
+## Changelog / Build Log
+
 ### 2026-09-07 — Session 31: "why ?" now quoted in About Me bio
 
 - **`src/components/Intro.tsx`:** the phrase now renders as "the *"why ?"* behind engineering principles" — added quotation marks around "why ?" as requested.
