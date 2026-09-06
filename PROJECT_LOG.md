@@ -41,8 +41,9 @@
 | `src/components/Hero.tsx` | Done (iteration 5) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA; parallax now applied synchronously on scroll (no rAF lag) |
 | `src/components/Intro.tsx` | Done (iteration 7) | White "Who am I?" about section with `id="about"` anchor — single-line title, 4:3 floated image tile sitting alongside the title and bio text, text wraps naturally around the image and takes full container width below it with zero empty space; parallax sweeps up (1.2×), decelerates smoothly, then scrolls away naturally at 1× |
 | `src/lib/scrollToSection.ts` | Done (iteration 2) | Parallax-aware smooth scroll helper — measures the transform-invariant layout top by neutralizing the inline transform, so nav links land the section top exactly at the viewport top from any scroll position |
-| `src/components/Projects.tsx` | Done (iteration 1) | "My Projects" section (`id="projects"`) — 8 expandable image tiles in a 3-per-row grid, gradient-backed expand bodies, "Explore Project" arrow into ProjectDetail, parallax cover (1.45×) over Intro |
-| `src/components/ProjectDetail.tsx` | Done | Full-page project detail view with hero, meta, tags, gallery, specs, and prev/next footer nav |
+| `src/components/Projects.tsx` | Done (iteration 2) | "My Projects" section (`id="projects"`) — 8 real project tiles in a 3-per-row grid, gradient-backed expand bodies showing each project's short intro, "Explore Project" arrow into ProjectDetail, parallax cover over Intro |
+| `src/components/ProjectDetail.tsx` | Done (iteration 2) | Full-page project detail view — hero (category, title, short intro, technical-area tags), attention-grabbing multi-media gallery (images + autoplaying muted videos with play-badge thumbnails), free-form content sections with `**bold**` emphasis, and prev/next footer nav |
+| `src/data/projectsData.ts` | Rewritten (Session 18) | 8 real engineering projects (Otter robot, Argo micromouse, DIYAKAWA 3.0, Bicycle instrumentation, SCARA vision pick-and-place, Factory floor optimization, IR cooker reverse engineering, Movie projector replica) — `Project` model now uses `sections` (heading + paragraphs/bullets) and `gallery` items with `type: "image" | "video"`; technical areas as tags |
 | `src/components/Contact.tsx` | Done (iteration 1) | White "Contact Me" section (`id="contact"`) after Projects — large left-aligned title, contact methods in 2 rows (Mobile/Email row 1, centered LinkedIn row 2), parallax cover (1.6×) |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
 | `components.json` | Created manually | shadcn config (`style: base-nova`, aliases `@/*` → `./src/*`) |
@@ -80,6 +81,22 @@
   - `.intro-text`: removed `58ch` max-width constraint, added `text-wrap: pretty;` — paragraphs wrap smoothly alongside the floated image and expand across the full 1380px width below the image without remaining in a column or leaving empty space on the right.
   - Mobile query (`@media (max-width: 960px)`): uses flex column with `order: 1` (Title), `order: 2` (Image, full width, centered), and `order: 3` (Paragraphs) for natural mobile reading order.
 - **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (54 modules).
+
+## Changelog / Build Log
+
+### 2026-09-06 — Session 18: Real project content + media in My Projects section
+
+- **`src/data/projectsData.ts` rewritten:** replaced the 8 placeholder projects (Mountain Vista / Ocean Waves / etc.) with the owner's 8 real engineering projects — Otter Body Mechanism Mimicking Robot, Micromouse Robot — Argo, DIYAKAWA 3.0, Bicycle & Rider Data Gathering System, Computer Vision-Powered Pick-and-Place Robot, Factory Floor Optimization for Production Flow, Reverse Engineering of an Infrared Cooker, and Vintage Movie Projector Replica.
+  - New `Project` model: `sections` (`{ heading, paragraphs[], bullets[] }`) replace the old fixed overview/specs/architecture/results fields, so each project's own prose sections (Introduction, Control Architecture, My Contribution, Current Status, etc.) render verbatim; `**bold**` markers render as `<strong>`.
+  - `gallery` items now support `type: "image" | "video"`; technical areas map to hero tags.
+- **`src/components/ProjectDetail.tsx` (iteration 2):** renders the new `sections`; hero keeps category badge, title, short intro, and technical-area tags (timeline/role meta grid removed — not part of the real content); gallery now plays videos (featured video is `controls autoPlay muted loop playsInline`, video thumbnails carry a play badge).
+- **Media wired in:** copied all owner media from `media/` into `src/assets/projects/` with clean names (argo-1, diyakawa-1..8 + 2 demo videos, instrumentation-1, manufacturing-1..3, scara-1..3 + demo video). Argo, DIYAKAWA, Instrumentation, Manufacturing, and SCARA use real project photos/videos (DIYAKAWA and SCARA open with an autoplaying muted demo video to catch attention).
+- **Video compression:** installed ffmpeg (winget, Gyan.FFmpeg) and re-encoded the three raw clips from HEVC to web-friendly H.264 MP4 (`+faststart`) — SCARA demo 260 MB → 11.2 MB (960×540@30, CRF 30), DIYAKAWA demo-1 55 MB → 8.9 MB (1280→720@30, CRF 27), demo-2 29 MB → 5.1 MB (CRF 27). Also fixes HEVC browser-playback risk.
+- **`bun-env.d.ts`:** added `*.mp4` module declaration.
+- **`src/index.css`:** added `.project-gallery-featured-video` (letterboxed), `.project-gallery-thumb-video` + `.thumb-play` badge, paragraph spacing for `.project-detail-text`, and mobile video height.
+- **Cover images for the 3 projects without media** (Otter, Factory Floor, Reverse Engineering) use existing generic assets (ocean-waves / gallery-field / gallery-lab) — temporary placeholders until owner provides real photos; DIYAKAWA gallery captions are generic descriptions pending owner refinement.
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (67 modules; total video payload ~25 MB).
+- Note: `media/` folder at repo root remains untracked (owner's source originals) and is intentionally NOT committed.
 
 ## Changelog / Build Log
 

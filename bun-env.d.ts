@@ -28,6 +28,11 @@ declare module "*.webp" {
   export = path;
 }
 
+declare module "*.mp4" {
+  const path: string;
+  export = path;
+}
+
 declare module "*.css" {}
 
 declare module "*.module.css" {

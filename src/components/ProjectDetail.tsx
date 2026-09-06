@@ -8,17 +8,29 @@ interface ProjectDetailProps {
   allProjects: Project[];
 }
 
+/** Renders a string that uses **bold** markers as strong text. */
+function RichText({ text }: { text: string }) {
+  const parts = text.split("**");
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 === 1 ? <strong key={i}>{part}</strong> : <span key={i}>{part}</span>,
+      )}
+    </>
+  );
+}
+
 export function ProjectDetail({
   project,
   onBack,
   onSelectOtherProject,
   allProjects,
 }: ProjectDetailProps) {
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
 
-  // Reset active image when project changes and scroll to top
+  // Reset active media when project changes and scroll to top
   useEffect(() => {
-    setActiveImageIndex(0);
+    setActiveMediaIndex(0);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [project.id]);
 
@@ -28,6 +40,8 @@ export function ProjectDetail({
     (currentIndex > 0 ? allProjects[currentIndex - 1] : allProjects[allProjects.length - 1])!;
   const nextProject =
     (currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : allProjects[0])!;
+
+  const activeMedia = project.gallery[activeMediaIndex];
 
   return (
     <div
@@ -72,17 +86,6 @@ export function ProjectDetail({
           <h1 className="project-detail-title">{project.title}</h1>
           <p className="project-detail-subtitle">{project.shortDesc}</p>
 
-          <div className="project-meta-grid">
-            <div className="project-meta-item">
-              <span className="project-meta-label">Timeline</span>
-              <span className="project-meta-value">{project.timeline}</span>
-            </div>
-            <div className="project-meta-item">
-              <span className="project-meta-label">Role</span>
-              <span className="project-meta-value">{project.role}</span>
-            </div>
-          </div>
-
           <div className="project-tags-list">
             {project.tags.map((tag) => (
               <span key={tag} className="project-tag-pill">
@@ -93,16 +96,29 @@ export function ProjectDetail({
         </div>
       </section>
 
-      {/* Multi-Image Gallery Showcase */}
+      {/* Multi-Media Gallery Showcase */}
       <section className="project-gallery-section">
         <div className="project-gallery-featured-wrap">
-          <img
-            src={project.gallery[activeImageIndex]?.src || project.image}
-            alt={project.gallery[activeImageIndex]?.caption || project.title}
-            className="project-gallery-featured-img"
-          />
+          {activeMedia?.type === "video" ? (
+            <video
+              src={activeMedia.src}
+              className="project-gallery-featured-video"
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            />
+          ) : (
+            <img
+              src={activeMedia?.src || project.image}
+              alt={activeMedia?.caption || project.title}
+              className="project-gallery-featured-img"
+            />
+          )}
           <div className="project-gallery-caption">
-            {project.gallery[activeImageIndex]?.caption || project.title}
+            {activeMedia?.caption || project.title}
           </div>
         </div>
 
@@ -113,68 +129,59 @@ export function ProjectDetail({
                 key={idx}
                 type="button"
                 className={`project-gallery-thumb-btn ${
-                  idx === activeImageIndex ? "active" : ""
+                  idx === activeMediaIndex ? "active" : ""
                 }`}
-                onClick={() => setActiveImageIndex(idx)}
-                aria-label={`View image ${idx + 1}`}
+                onClick={() => setActiveMediaIndex(idx)}
+                aria-label={`View media ${idx + 1}`}
               >
-                <img
-                  src={item.src}
-                  alt={item.caption}
-                  className="project-gallery-thumb-img"
-                />
+                {item.type === "video" ? (
+                  <>
+                    <video
+                      src={item.src}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="project-gallery-thumb-video"
+                    />
+                    <span className="thumb-play" aria-hidden="true" />
+                  </>
+                ) : (
+                  <img
+                    src={item.src}
+                    alt={item.caption}
+                    className="project-gallery-thumb-img"
+                  />
+                )}
               </button>
             ))}
           </div>
         )}
       </section>
 
-      {/* In-depth Technical Documentation */}
+      {/* In-depth Project Documentation */}
       <main className="project-detail-body">
-        {/* Project Overview */}
-        <section className="project-detail-block">
-          <h2 className="project-detail-heading">Project Overview</h2>
-          <p className="project-detail-text">{project.overview}</p>
-        </section>
-
-        {/* Technical Specifications */}
-        <section className="project-detail-block">
-          <h2 className="project-detail-heading">Technical Specifications</h2>
-          <div className="project-specs-grid">
-            {project.specs.map((spec) => (
-              <div key={spec.label} className="project-spec-card">
-                <span className="project-spec-label">{spec.label}</span>
-                <span className="project-spec-val">{spec.value}</span>
-              </div>
+        {project.sections.map((section, idx) => (
+          <section className="project-detail-block" key={idx}>
+            <h2 className="project-detail-heading">{section.heading}</h2>
+            {section.paragraphs?.map((paragraph, i) => (
+              <p className="project-detail-text" key={i}>
+                <RichText text={paragraph} />
+              </p>
             ))}
-          </div>
-        </section>
-
-        {/* Architecture & Engineering Innovations */}
-        <section className="project-detail-block">
-          <h2 className="project-detail-heading">Architecture & Key Innovations</h2>
-          <ul className="project-bullet-list">
-            {project.architecture.map((item, idx) => (
-              <li key={idx} className="project-bullet-item">
-                <span className="project-bullet-dot" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Performance Results */}
-        <section className="project-detail-block">
-          <h2 className="project-detail-heading">Performance Results & Impact</h2>
-          <ul className="project-bullet-list">
-            {project.results.map((item, idx) => (
-              <li key={idx} className="project-bullet-item">
-                <span className="project-bullet-dot" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
+            {section.bullets && section.bullets.length > 0 && (
+              <ul className="project-bullet-list">
+                {section.bullets.map((bullet, i) => (
+                  <li key={i} className="project-bullet-item">
+                    <span className="project-bullet-dot" />
+                    <span>
+                      <RichText text={bullet} />
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
       </main>
 
       {/* Bottom Navigation between projects */}
