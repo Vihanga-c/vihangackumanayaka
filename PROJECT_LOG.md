@@ -38,7 +38,7 @@
 |---|---|---|
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
-| `src/components/Hero.tsx` | Done (iteration 7) | Hero landing page: full-viewport Grainient background + name, degree line ("B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering"), tagline, and single glass "Get my CV" CTA — larger eye-catching typography across all hero content; static (no parallax) |
+| `src/components/Hero.tsx` | Done (iteration 8) | Hero landing page: full-viewport Grainient background + name, degree line ("B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering (University of Moratuwa)"), tagline, and single glass "Get my CV" CTA — name and degree render on single lines with exactly matching widths (JS-measured font scaling); larger eye-catching typography; static (no parallax) |
 | `src/components/Intro.tsx` | Done (iteration 9) | White "Who am I ?" about section with `id="about"` anchor — larger title (with space before "?"), owner's portrait (`src/assets/myself.jpg`) floated right at its natural 3:4 aspect ratio (uncropped, `object-fit: contain`), text wraps around the image and expands full-width below it; static so the section flows directly into Projects |
 | `src/lib/scrollToSection.ts` | Done (iteration 3) | Smooth scroll helper for static sections — no parallax correction needed anymore (all `SECTION_RATES` = 0), targets each section's exact layout top |
 | `src/components/Projects.tsx` | Done (iteration 4) | "My Projects" section (`id="projects"`) — 8 interactive project cards displaying image, title, 3 primary skills + `+N` count badge, compact intro, and "View Project" action; uniform tile heights; entire card clickable with hover lift and glow |
@@ -64,6 +64,23 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-07 — Session 24: Hero name & degree on matching single-line widths, degree adds (University of Moratuwa)
+
+- **`src/components/Hero.tsx` (iteration 8):**
+  - Degree line now reads: `B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering (University of Moratuwa)`.
+  - Added a `useLayoutEffect` width-sync: measures the name and degree at their CSS base sizes, scales the name down to exactly fill its container (single line, never overflows), then scales the degree font so its rendered width exactly equals the name's width. Re-runs on `resize`.
+  - On screens ≤ 640px the degree is allowed to wrap at a readable size (equal-width match would make it ~6px); the name still fits on one line.
+- **`src/index.css`:**
+  - `.hero-content`: added `min-width: 0` (it's a flex item and was expanding to fit the long nowrap text, which broke the width measurement on narrow screens).
+  - `.hero h1`: `white-space: nowrap`, `font-size: clamp(2.5rem, 9vw, 6rem)`.
+  - `.hero-degree`: `white-space: nowrap`, base `font-size: 1.1rem` (JS overrides it on desktop); mobile override wraps at `1rem`.
+- **E2E verified (Playwright):**
+  - 1280×800: name 92.6px / degree 17.6px, both exactly 1056px wide (Δ0px), both single line, no overflow.
+  - 390×844: name shrinks to fit 358px single line; degree wraps readably.
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK.
 
 ## Changelog / Build Log
 

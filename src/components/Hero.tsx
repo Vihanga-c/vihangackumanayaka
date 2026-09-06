@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Grainient from "./Grainient";
 
 export function Hero() {
   const [reducedMotion, setReducedMotion] = useState(false);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const degreeRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -10,6 +12,41 @@ export function Hero() {
     const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  // Keep the name and the degree line exactly the same rendered width, and
+  // never let the name overflow its container (both stay on a single line).
+  // On narrow screens the degree wraps naturally instead of becoming tiny.
+  useLayoutEffect(() => {
+    const name = nameRef.current;
+    const degree = degreeRef.current;
+    if (!name || !degree) return;
+
+    const syncWidths = () => {
+      // Restore the CSS-declared sizes first so each pass measures cleanly.
+      name.style.fontSize = "";
+      degree.style.fontSize = "";
+
+      const availableW = name.clientWidth;
+      const baseNameFont = parseFloat(getComputedStyle(name).fontSize);
+      const neededNameW = name.scrollWidth;
+      const nameFont =
+        neededNameW > availableW
+          ? (baseNameFont * availableW) / neededNameW
+          : baseNameFont;
+      name.style.fontSize = `${nameFont}px`;
+      const nameW = name.scrollWidth;
+
+      if (!window.matchMedia("(max-width: 640px)").matches) {
+        const baseDegreeFont = parseFloat(getComputedStyle(degree).fontSize);
+        const neededDegreeW = degree.scrollWidth;
+        degree.style.fontSize = `${(baseDegreeFont * nameW) / neededDegreeW}px`;
+      }
+    };
+
+    syncWidths();
+    window.addEventListener("resize", syncWidths);
+    return () => window.removeEventListener("resize", syncWidths);
   }, []);
 
   return (
@@ -43,10 +80,12 @@ export function Hero() {
 
       <div className="hero-content">
         <p className="hero-eyebrow">Engineering Portfolio</p>
-        <h1 id="hero-title">Vihanga C. Kumanayaka</h1>
-        <p className="hero-degree">
+        <h1 id="hero-title" ref={nameRef}>
+          Vihanga C. Kumanayaka
+        </h1>
+        <p className="hero-degree" ref={degreeRef}>
           B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic
-          Systems Engineering
+          Systems Engineering (University of Moratuwa)
         </p>
         <p className="hero-subtitle">
           Engineering projects, experiences and the skills honed along the way.
