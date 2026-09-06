@@ -67,6 +67,15 @@
 
 ## Changelog / Build Log
 
+### 2026-09-07 — Session 27: Fix shimmer text disappearing at the end of each sweep
+
+- **Root cause (`src/index.css`):** the sweep animated `background-position` from `100%` to `-100%` with `background-size: 300%`. At negative positions the gradient image moves entirely off the element, so the text (drawn with `color: transparent` + `background-clip: text`) had no background behind the glyphs and vanished — most visibly in the `forwards` end-state (~300ms per cycle) and the tail half of the sweep.
+- **Fix:** `background-size` `300% → 250%` and the keyframes now go `100% → 0%`. With `background-position` held in `[0%, 100%]`, the gradient image always covers the element, so the text is always painted; the white highlight band (gradient stops `40%–60%`) simply sweeps across the still-visible text.
+- **E2E verified (Playwright):** 13 computed `background-position` samples across a full sweep + the toggle — all within `[0%, 100%]` (no out-of-range). Pixel analysis of the shimmering line (PNG screenshot decoded via pngjs): 4,500–6,300 near-white text-ink pixels at every sampled moment — text never disappears.
+- **Build verified:** `bun tsc --noEmit` passes; `bun run build` OK.
+
+## Changelog / Build Log
+
 ### 2026-09-07 — Session 26: Shimmer-sweep tagline in Hero + font hierarchy tweaks
 
 - **`src/components/Hero.tsx` (iteration 10):**
