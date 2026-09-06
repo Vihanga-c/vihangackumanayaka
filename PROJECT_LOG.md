@@ -39,7 +39,7 @@
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
 | `src/components/Hero.tsx` | Done (iteration 11) | Hero landing page: full-viewport Grainient background + name, degree + university block, shimmer-sweep tagline (two lines that shimmer sequentially top→bottom via a CSS gradient sweep + React toggle), and single glass "Get my CV" CTA that downloads the owner's CV PDF (`src/assets/cv/Vihanga-Chamodya-Kumanayaka-CV.pdf`) — name and degree render on single lines with matching widths (degree = 80% of name width so it sits below the tagline size), larger tagline typography; static (no parallax) |
-| `src/components/Intro.tsx` | Done (iteration 9) | White "Who am I ?" about section with `id="about"` anchor — larger title (with space before "?"), owner's portrait (`src/assets/myself.jpg`) floated right at its natural 3:4 aspect ratio (uncropped, `object-fit: contain`), text wraps around the image and expands full-width below it; static so the section flows directly into Projects |
+| `src/components/Intro.tsx` | Done (iteration 10) | White "Who am I ?" about section with `id="about"` anchor — larger title (with space before "?"), owner's portrait (`src/assets/myself.jpg`) floated right at its natural 3:4 aspect ratio (uncropped, `object-fit: contain`), text wraps around the image and expands full-width below it; static so the section flows directly into Projects. Bio = owner's 4-paragraph about-me text (degree/university + interests, GPA 3.69/4.00 + Dean's List, karate + Colours, closing growth mindset) |
 | `src/lib/scrollToSection.ts` | Done (iteration 3) | Smooth scroll helper for static sections — no parallax correction needed anymore (all `SECTION_RATES` = 0), targets each section's exact layout top |
 | `src/components/Projects.tsx` | Done (iteration 4) | "My Projects" section (`id="projects"`) — 8 interactive project cards displaying image, title, 3 primary skills + `+N` count badge, compact intro, and "View Project" action; uniform tile heights; entire card clickable with hover lift and glow |
 | `src/components/ProjectDetail.tsx` | Done (iteration 3) | Full-page editorial project detail view — floating uncropped media with seamless text wrapping, native video aspect ratios (no black letterbox bars), hero media layout with responsive stacking for split-screen / mobile, larger titles/subtitles/content typography, and zero captions |
@@ -64,6 +64,13 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-07 — Session 29: About Me paragraphs updated to the owner's new 4-paragraph bio
+
+- **`src/components/Intro.tsx`:** replaced the 3-paragraph About Me bio with the owner's new 4 paragraphs — (1) intro with degree/university + technical interests, (2) academic emphasis: GPA 3.69/4.00 and Dean's List (third semester), (3) karate team + two consecutive University of Moratuwa Colours awards, (4) closing growth-mindset paragraph. `**bold**` preserved as `<strong>`, `*why*` rendered as `<em>`.
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (63 modules).
 
 ## Changelog / Build Log
 
