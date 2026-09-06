@@ -4,6 +4,7 @@ import Grainient from "./Grainient";
 export function Hero() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const nameRef = useRef<HTMLHeadingElement>(null);
+  const degreesRef = useRef<HTMLDivElement>(null);
   const degreeRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -19,13 +20,14 @@ export function Hero() {
   // On narrow screens the degree wraps naturally instead of becoming tiny.
   useLayoutEffect(() => {
     const name = nameRef.current;
+    const degrees = degreesRef.current;
     const degree = degreeRef.current;
-    if (!name || !degree) return;
+    if (!name || !degrees || !degree) return;
 
     const syncWidths = () => {
       // Restore the CSS-declared sizes first so each pass measures cleanly.
+      degrees.style.fontSize = "";
       name.style.fontSize = "";
-      degree.style.fontSize = "";
 
       const availableW = name.clientWidth;
       const baseNameFont = parseFloat(getComputedStyle(name).fontSize);
@@ -40,7 +42,7 @@ export function Hero() {
       if (!window.matchMedia("(max-width: 640px)").matches) {
         const baseDegreeFont = parseFloat(getComputedStyle(degree).fontSize);
         const neededDegreeW = degree.scrollWidth;
-        degree.style.fontSize = `${(baseDegreeFont * nameW) / neededDegreeW}px`;
+        degrees.style.fontSize = `${(baseDegreeFont * nameW) / neededDegreeW}px`;
       }
     };
 
@@ -83,10 +85,13 @@ export function Hero() {
         <h1 id="hero-title" ref={nameRef}>
           Vihanga C. Kumanayaka
         </h1>
-        <p className="hero-degree" ref={degreeRef}>
-          B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic
-          Systems Engineering (University of Moratuwa)
-        </p>
+        <div className="hero-degrees" ref={degreesRef}>
+          <p className="hero-degree" ref={degreeRef}>
+            B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic
+            Systems Engineering
+          </p>
+          <p className="hero-university">(University of Moratuwa)</p>
+        </div>
         <p className="hero-subtitle">
           Engineering projects, experiences and the skills honed along the way.
           Designed, Built, Executed and Documented.

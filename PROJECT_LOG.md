@@ -38,7 +38,7 @@
 |---|---|---|
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
-| `src/components/Hero.tsx` | Done (iteration 8) | Hero landing page: full-viewport Grainient background + name, degree line ("B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering (University of Moratuwa)"), tagline, and single glass "Get my CV" CTA — name and degree render on single lines with exactly matching widths (JS-measured font scaling); larger eye-catching typography; static (no parallax) |
+| `src/components/Hero.tsx` | Done (iteration 9) | Hero landing page: full-viewport Grainient background + name, degree line + university line ("B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering" / "(University of Moratuwa)") left-aligned together in a centered block under the name, tagline, and single glass "Get my CV" CTA — name and degree render on single lines with exactly matching widths (JS-measured font scaling); larger eye-catching typography; static (no parallax) |
 | `src/components/Intro.tsx` | Done (iteration 9) | White "Who am I ?" about section with `id="about"` anchor — larger title (with space before "?"), owner's portrait (`src/assets/myself.jpg`) floated right at its natural 3:4 aspect ratio (uncropped, `object-fit: contain`), text wraps around the image and expands full-width below it; static so the section flows directly into Projects |
 | `src/lib/scrollToSection.ts` | Done (iteration 3) | Smooth scroll helper for static sections — no parallax correction needed anymore (all `SECTION_RATES` = 0), targets each section's exact layout top |
 | `src/components/Projects.tsx` | Done (iteration 4) | "My Projects" section (`id="projects"`) — 8 interactive project cards displaying image, title, 3 primary skills + `+N` count badge, compact intro, and "View Project" action; uniform tile heights; entire card clickable with hover lift and glow |
@@ -64,6 +64,22 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-07 — Session 25: University name moved to its own left-aligned line inside a centered degree block
+
+- **`src/components/Hero.tsx` (iteration 9):**
+  - Split the degree line: `(University of Moratuwa)` removed from the degree paragraph and placed in its own `.hero-university` line.
+  - Degree + university wrapped in a `.hero-degrees` block. The width-sync effect now sets the font-size on the `.hero-degrees` wrapper (both lines inherit it), so the degree title still matches the name width exactly and the university line scales with it.
+- **`src/index.css`:**
+  - `.hero-degrees`: `width: fit-content; margin: 1.1rem auto 0; text-align: left;` — the degree + university block shrink-wraps and is centered as a unit under the name; the university line is left-aligned with the degree title.
+  - `.hero-degree` / `.hero-university`: `white-space: nowrap`, font/weight/color inherited from the wrapper. Mobile (≤640px) override: wrapper `1rem`, degree `white-space: normal`.
+- **E2E verified (Playwright):**
+  - 1280×800: degree 1056px == name width (Δ0); degree left 112 == university left 112 (left-aligned); block center 640 == name center (centered under name); no overflow.
+  - 390×844: same checks pass (block center 195 == name center), no overflow.
+  - Bonus: since the degree text is shorter now, its font is larger (~27px desktop vs 17.6px before).
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK.
 
 ## Changelog / Build Log
 
