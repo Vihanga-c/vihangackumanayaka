@@ -1,23 +1,13 @@
-import oceanWavesImg from "../assets/projects/ocean-waves.jpg";
-import micromouseImg from "../assets/projects/micromouse.jpg";
-import galleryCadImg from "../assets/projects/gallery-cad.jpg";
-import galleryPcbImg from "../assets/projects/gallery-pcb.jpg";
-import galleryLabImg from "../assets/projects/gallery-lab.jpg";
-import galleryTelemetryImg from "../assets/projects/gallery-telemetry.jpg";
-import galleryFieldImg from "../assets/projects/gallery-field.jpg";
-
 import argoImg from "../assets/projects/argo/argo-1.jpeg";
 
-import diyakawaImg1 from "../assets/projects/diyakawa/diyakawa-1.jpeg";
 import diyakawaImg2 from "../assets/projects/diyakawa/diyakawa-2.jpeg";
-import diyakawaImg3 from "../assets/projects/diyakawa/diyakawa-3.jpeg";
-import diyakawaImg4 from "../assets/projects/diyakawa/diyakawa-4.jpeg";
 import diyakawaImg5 from "../assets/projects/diyakawa/diyakawa-5.jpeg";
 import diyakawaImg6 from "../assets/projects/diyakawa/diyakawa-6.jpeg";
 import diyakawaImg7 from "../assets/projects/diyakawa/diyakawa-7.jpeg";
-import diyakawaImg8 from "../assets/projects/diyakawa/diyakawa-8.jpeg";
 import diyakawaVideo1 from "../assets/projects/diyakawa/diyakawa-demo-1.mp4";
 import diyakawaVideo2 from "../assets/projects/diyakawa/diyakawa-demo-2.mp4";
+
+import factoryImg from "../assets/projects/factory/ferentino.jpeg";
 
 import instrumentationImg from "../assets/projects/instrumentation/instrumentation-1.jpeg";
 
@@ -25,19 +15,28 @@ import manufacturingImg1 from "../assets/projects/manufacturing/manufacturing-1.
 import manufacturingImg2 from "../assets/projects/manufacturing/manufacturing-2.jpeg";
 import manufacturingImg3 from "../assets/projects/manufacturing/manufacturing-3.jpeg";
 
+import otterImg1 from "../assets/projects/otter/otter-1.png";
+import otterImg2 from "../assets/projects/otter/otter-2.png";
+
+import reverseImg1 from "../assets/projects/reverse/reverse-1.png";
+import reverseImg2 from "../assets/projects/reverse/reverse-2.png";
+import reverseImg3 from "../assets/projects/reverse/reverse-3.png";
+
 import scaraImg1 from "../assets/projects/scara/scara-1.jpeg";
 import scaraImg2 from "../assets/projects/scara/scara-2.jpeg";
 import scaraImg3 from "../assets/projects/scara/scara-3.jpeg";
 import scaraVideo from "../assets/projects/scara/scara-demo.mp4";
 
-export interface ProjectGalleryItem {
+export interface ProjectMediaItem {
   src: string;
-  caption: string;
   type?: "image" | "video";
+  align?: "left" | "right";
+  alt?: string;
 }
 
 export interface ProjectSection {
   heading: string;
+  media?: ProjectMediaItem;
   paragraphs?: string[];
   bullets?: string[];
 }
@@ -51,7 +50,8 @@ export interface Project {
   accentColor: string;
   gradientBackdrop: string;
   tags: string[];
-  gallery: ProjectGalleryItem[];
+  heroMedia?: ProjectMediaItem;
+  heroLayout?: "default" | "media-left" | "media-right";
   sections: ProjectSection[];
 }
 
@@ -59,10 +59,10 @@ export const PROJECTS: Project[] = [
   {
     id: "otter-robot",
     title: "Otter Body Mechanism Mimicking Robot",
-    category: "Mechatronic System Design",
+    category: "Mechatronic System Design Project",
     shortDesc:
       "An aquatic robot inspired by an otter's swimming biomechanics. It generates forward thrust through body undulation and limb paddling, engineered through linkage design, multibody dynamics, and hydrodynamic analysis.",
-    image: oceanWavesImg,
+    image: otterImg1,
     accentColor: "#00CEC9",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(0, 206, 201, 0.42) 0%, rgba(8, 70, 75, 0.75) 45%, rgba(4, 15, 20, 0.96) 100%)",
@@ -76,23 +76,15 @@ export const PROJECTS: Project[] = [
       "Hydrodynamic Analysis",
       "Electronic Circuit Design",
     ],
-    gallery: [
-      {
-        src: oceanWavesImg,
-        caption: "Aquatic robot concept inspired by the swimming biomechanics of an otter",
-      },
-      {
-        src: galleryCadImg,
-        caption: "Linkage mechanism configurations explored for the paddling limb",
-      },
-      {
-        src: galleryLabImg,
-        caption: "Mechanism prototyping and motion-characteristic evaluation",
-      },
-    ],
     sections: [
       {
         heading: "Introduction",
+        media: {
+          src: otterImg1,
+          type: "image",
+          align: "right",
+          alt: "Otter Body Mechanism Mimicking Robot concept and simulation",
+        },
         paragraphs: [
           "The **ME3261: Mechatronic System Design Project** is a three-semester engineering project focused on developing a complete mechatronic system for industrial application, supported by a structured design process, analysis, and technical justification.",
           "My proposed system is an **aquatic robot inspired by the swimming biomechanics of an otter**. Rather than relying solely on conventional propellers, the robot is designed to generate forward thrust through a combination of **body undulation and limb paddling**. The project explores how the distinctive morphology and swimming motion of an otter can be translated into an engineered robotic system through **mechanical linkage design, multibody dynamics, hydrodynamic analysis, control systems, and electronic circuit design**.",
@@ -101,6 +93,12 @@ export const PROJECTS: Project[] = [
       },
       {
         heading: "Current Status",
+        media: {
+          src: otterImg2,
+          type: "image",
+          align: "left",
+          alt: "Limb linkage mechanism and motion evaluation",
+        },
         paragraphs: [
           "The current focus of the project is the development and evaluation of the **otter-inspired limb mechanism**. The objective is not only to generate effective thrust during the paddling stroke, but also to minimize drag during the recovery stroke.",
           "Multiple linkage configurations are currently being explored to determine which mechanism can provide the most effective and efficient paddling motion. This work involves evaluating different mechanical architectures and their motion characteristics as part of the iterative design process.",
@@ -111,7 +109,7 @@ export const PROJECTS: Project[] = [
   {
     id: "micromouse-argo",
     title: "Micromouse Robot: Argo",
-    category: "High-Speed Autonomous Robotics",
+    category: "Micromouse Robot Project",
     shortDesc:
       "Argo is an autonomous Micromouse robot that explores unknown mazes, determines the fastest route to the centre, and sprints through it at high speed.",
     image: argoImg,
@@ -133,20 +131,12 @@ export const PROJECTS: Project[] = [
       "Motor Control",
       "CAD Design",
     ],
-    gallery: [
-      {
-        src: argoImg,
-        caption: "Argo: assembled micromouse robot platform",
-      },
-      {
-        src: micromouseImg,
-        caption: "Compact chassis integrating sensors, IMU, and drive motors",
-      },
-      {
-        src: galleryPcbImg,
-        caption: "Embedded electronics and motor-drive hardware",
-      },
-    ],
+    heroMedia: {
+      src: argoImg,
+      type: "image",
+      align: "right",
+      alt: "Argo assembled autonomous micromouse robot platform",
+    },
     sections: [
       {
         heading: "Introduction",
@@ -179,10 +169,10 @@ export const PROJECTS: Project[] = [
   {
     id: "diyakawa",
     title: "DIYAKAWA 3.0",
-    category: "Autonomous Underwater Robotics",
+    category: "Underwater Robotics Project",
     shortDesc:
       "A University of Moratuwa autonomous underwater vehicle with eight BLDC thrusters and IMU-based orientation and depth control, shortlisted to compete at SAUVC 2026.",
-    image: diyakawaImg4,
+    image: diyakawaImg6,
     accentColor: "#4FACFE",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(79, 172, 254, 0.42) 0%, rgba(20, 60, 110, 0.75) 45%, rgba(6, 14, 28, 0.96) 100%)",
@@ -203,50 +193,12 @@ export const PROJECTS: Project[] = [
       "IMU-Based Orientation",
       "System Integration",
     ],
-    gallery: [
-      {
-        src: diyakawaVideo1,
-        caption: "Underwater test footage of DIYAKAWA 3.0",
-        type: "video",
-      },
-      {
-        src: diyakawaImg4,
-        caption: "DIYAKAWA 3.0: the SAUVC 2026 autonomous underwater vehicle",
-      },
-      {
-        src: diyakawaVideo2,
-        caption: "Propulsion and manoeuvring trials",
-        type: "video",
-      },
-      {
-        src: diyakawaImg1,
-        caption: "Vehicle structure during assembly",
-      },
-      {
-        src: diyakawaImg2,
-        caption: "Structural frame and component integration",
-      },
-      {
-        src: diyakawaImg3,
-        caption: "Watertight enclosures and thruster installation",
-      },
-      {
-        src: diyakawaImg5,
-        caption: "Control electronics and power system",
-      },
-      {
-        src: diyakawaImg6,
-        caption: "Testing and validation session",
-      },
-      {
-        src: diyakawaImg7,
-        caption: "Deployment preparation",
-      },
-      {
-        src: diyakawaImg8,
-        caption: "Team testing at the water site",
-      },
-    ],
+    heroMedia: {
+      src: diyakawaImg5,
+      type: "image",
+      align: "right",
+      alt: "DIYAKAWA 3.0 autonomous underwater vehicle",
+    },
     sections: [
       {
         heading: "Introduction",
@@ -255,14 +207,26 @@ export const PROJECTS: Project[] = [
         ],
       },
       {
-        heading: "Control Architecture",
+        heading: "Control Architecture & Thruster Propulsion",
+        media: {
+          src: diyakawaVideo1,
+          type: "video",
+          align: "left",
+          alt: "Underwater test footage of DIYAKAWA 3.0",
+        },
         paragraphs: [
           "DIYAKAWA 3.0 is equipped with **eight BLDC motors** to provide vertical, horizontal, and rotational motion, enabling the vehicle to manoeuvre underwater in multiple degrees of freedom.",
           "An **IMU and pressure sensor** are used for orientation estimation and depth measurement, while an **ESP32** serves as the main microcontroller. The control system enables the vehicle to descend to specified depths and follow predefined trajectories while maintaining stable underwater motion.",
         ],
       },
       {
-        heading: "Body Structure and Waterproofing",
+        heading: "Body Structure & Waterproofing",
+        media: {
+          src: diyakawaImg6,
+          type: "image",
+          align: "right",
+          alt: "Structural frame and watertight enclosure assembly",
+        },
         paragraphs: [
           "A rigid structural frame was designed using CAD modelling software and manufactured using **aluminium sheets** to achieve the required strength and durability while allowing the various components to be securely fastened.",
           "The vehicle's control electronics, including the MCU and sensors, are housed within a dedicated **water-tight enclosure**, while the battery and other high-current components are isolated within a separate enclosure. Waterproof aviation connectors are used to interface the internal electronics with the external BLDC motors.",
@@ -270,12 +234,40 @@ export const PROJECTS: Project[] = [
         ],
       },
       {
-        heading: "My Contribution",
+        heading: "Propulsion Trials & Mechanical Protection",
+        media: {
+          src: diyakawaVideo2,
+          type: "video",
+          align: "left",
+          alt: "Propulsion and maneuvering trials in water",
+        },
         paragraphs: [
           "My primary mechanical contribution focused on **waterproofing and protecting the vehicle's 3D-printed structures and electronic enclosures**. I investigated methods of preventing water ingress and applied **epoxy coatings** to the 3D-printed components, together with weather-resistant adhesive protection. Aviation connector interfaces were additionally reinforced and sealed using gasket sealants.",
           "Although minor seepage remained within some 3D-printed components, these measures significantly reduced water-related damage and successfully prevented water leakage into the electronic enclosures.",
+        ],
+      },
+      {
+        heading: "Power Electronics & Motor Control Logic",
+        media: {
+          src: diyakawaImg2,
+          type: "image",
+          align: "right",
+          alt: "Electronics wiring and power management circuitry",
+        },
+        paragraphs: [
           "I also contributed to the **selection of the vehicle's control approach and the development of its electronic circuitry**. Since the eight motors were driven using bidirectional ESCs and the total motor system could demand approximately **20 A at peak operation**, electrical protection and power management were important considerations. My work included incorporating fuses and relays, selecting suitable step-down converters for the required voltage levels, and integrating a reed-switch-and-magnet-based emergency kill switch.",
           "In addition, I contributed to the development of the **BLDC motor control logic using PWM signals**, including the balancing of individual motor speed variations to improve the stability of the vehicle during underwater operation.",
+        ],
+      },
+      {
+        heading: "Field Validation & Engineering Outcomes",
+        media: {
+          src: diyakawaImg7,
+          type: "image",
+          align: "left",
+          alt: "Pool testing and field validation session",
+        },
+        paragraphs: [
           "This project provided hands-on experience in **autonomous robotics, underwater system design, waterproofing, power electronics, embedded control, BLDC motor control, electrical safety, and multidisciplinary system integration**.",
         ],
       },
@@ -284,7 +276,7 @@ export const PROJECTS: Project[] = [
   {
     id: "bike-instrumentation",
     title: "Bicycle & Rider Data Gathering System",
-    category: "Instrumentation & IoT",
+    category: "Instrumentation System Design Project",
     shortDesc:
       "An instrumentation and IoT system that collects, processes, and presents bicycle and rider performance data, using an Extended Kalman Filter to counter sensor drift, offset, and noise.",
     image: instrumentationImg,
@@ -304,20 +296,12 @@ export const PROJECTS: Project[] = [
       "IoT",
       "Data Acquisition",
     ],
-    gallery: [
-      {
-        src: instrumentationImg,
-        caption: "Bicycle and rider instrumentation setup",
-      },
-      {
-        src: galleryLabImg,
-        caption: "Sensor calibration and measurement-system validation",
-      },
-      {
-        src: galleryTelemetryImg,
-        caption: "Processed ride telemetry consolidated in the web application",
-      },
-    ],
+    heroMedia: {
+      src: instrumentationImg,
+      type: "image",
+      align: "right",
+      alt: "Bicycle and rider data gathering instrumentation setup",
+    },
     sections: [
       {
         heading: "Introduction",
@@ -328,7 +312,7 @@ export const PROJECTS: Project[] = [
         ],
       },
       {
-        heading: "My Contribution",
+        heading: "My Contribution & Sensor Fusion",
         paragraphs: [
           "My primary contribution was the integration of an **MPU6050 accelerometer and gyroscope** into the measurement system to determine the bicycle's inclination.",
           "The accelerometer and gyroscope exhibit different limitations: the gyroscope is susceptible to accumulated drift, while accelerometer measurements can be affected by noise and external motion. I implemented an **Extended Kalman Filter to fuse measurements from both sensors**, allowing these limitations to be mitigated and producing more stable estimates of the bicycle's inclination along its longitudinal and horizontal axes.",
@@ -340,10 +324,10 @@ export const PROJECTS: Project[] = [
   {
     id: "scara-vision",
     title: "Computer Vision-Powered Pick-and-Place Robot",
-    category: "Robotics & Computer Vision",
+    category: "Mechatronic Systems Engineering Project",
     shortDesc:
       "A SCARA robotic system that identifies objects by colour and shape with a YOLOv8 object-detection model, then autonomously picks them up and places them in a designated location.",
-    image: scaraImg1,
+    image: scaraImg2,
     accentColor: "#00B894",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(0, 184, 148, 0.4) 0%, rgba(12, 70, 60, 0.75) 45%, rgba(4, 18, 17, 0.96) 100%)",
@@ -358,25 +342,13 @@ export const PROJECTS: Project[] = [
       "Robotic Manipulation",
       "Automated Pick-and-Place",
     ],
-    gallery: [
-      {
-        src: scaraImg1,
-        caption: "SCARA pick-and-place robot with integrated camera vision",
-      },
-      {
-        src: scaraVideo,
-        caption: "Live autonomous pick-and-place demonstration",
-        type: "video",
-      },
-      {
-        src: scaraImg2,
-        caption: "Camera and object-detection setup over the turntable",
-      },
-      {
-        src: scaraImg3,
-        caption: "Gripper and manipulation assembly",
-      },
-    ],
+    heroLayout: "media-left",
+    heroMedia: {
+      src: scaraVideo,
+      type: "video",
+      align: "left",
+      alt: "Autonomous pick-and-place demonstration",
+    },
     sections: [
       {
         heading: "Introduction",
@@ -387,11 +359,41 @@ export const PROJECTS: Project[] = [
         ],
       },
       {
-        heading: "My Contribution",
+        heading: "YOLOv8 Object Detection Pipeline",
+        media: {
+          src: scaraImg1,
+          type: "image",
+          align: "right",
+          alt: "SCARA pick-and-place robot with integrated camera vision",
+        },
         paragraphs: [
           "I worked with a teammate on developing and training a **YOLOv8 object-detection model** to identify both the colours and shapes of the objects placed on the turntable.",
-          "Following a user request from the web application, the Raspberry Pi processes the camera input using the trained model and determines the target object's location in image coordinates. This information is then transformed into a corresponding **real-world position relative to the SCARA robot's coordinate system**, providing the control system with the positional information required for object manipulation.",
+          "Following a user request from the web application, the Raspberry Pi processes the camera input using the trained model and determines the target object's location in image coordinates.",
+        ],
+      },
+      {
+        heading: "Kinematic Transformation & Manipulation",
+        media: {
+          src: scaraImg2,
+          type: "image",
+          align: "left",
+          alt: "Camera and object-detection setup over the turntable",
+        },
+        paragraphs: [
+          "Target coordinates identified in the image frame are transformed into a corresponding **real-world position relative to the SCARA robot's coordinate system**, providing the control system with the positional information required for object manipulation.",
           "This project gave me practical experience in **computer vision, machine learning model training, coordinate transformation, robotic perception, Raspberry Pi-based processing, and the integration of vision systems with robotic manipulation**.",
+        ],
+      },
+      {
+        heading: "Project Team & Engineering Outcomes",
+        media: {
+          src: scaraImg3,
+          type: "image",
+          align: "right",
+          alt: "SCARA robotics engineering team",
+        },
+        paragraphs: [
+          "The collaborative engineering effort resulted in a fully automated pick-and-place demonstration, confirming end-to-end integration of deep-learning perception, kinematic planning, and real-time robotic actuation.",
         ],
       },
     ],
@@ -399,10 +401,10 @@ export const PROJECTS: Project[] = [
   {
     id: "factory-flow",
     title: "Factory Floor Optimization for Production Flow",
-    category: "Industrial Engineering & Operations",
+    category: "Productions and Operations Management Project",
     shortDesc:
       "An industrial study at the Ferentino Tire Manufacturing Plant analysing production flow and using Tecnomatix to simulate a proposed gantry-based material handling solution.",
-    image: galleryFieldImg,
+    image: factoryImg,
     accentColor: "#FDCB6E",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(253, 203, 110, 0.4) 0%, rgba(120, 78, 22, 0.75) 45%, rgba(24, 16, 8, 0.96) 100%)",
@@ -415,20 +417,6 @@ export const PROJECTS: Project[] = [
       "Material Handling Systems",
       "Workflow Analysis",
       "Industrial Data Collection",
-    ],
-    gallery: [
-      {
-        src: galleryFieldImg,
-        caption: "On-site study at the Ferentino Tire Manufacturing Plant",
-      },
-      {
-        src: galleryCadImg,
-        caption: "Tecnomatix simulation of the production workflow",
-      },
-      {
-        src: galleryTelemetryImg,
-        caption: "Factory-floor data collection and workflow analysis",
-      },
     ],
     sections: [
       {
@@ -462,10 +450,10 @@ export const PROJECTS: Project[] = [
   {
     id: "ir-cooker-reverse",
     title: "Reverse Engineering of an Infrared Cooker",
-    category: "Reverse Engineering & Materials",
+    category: "Reverse engineering project",
     shortDesc:
       "A reverse-engineering and manufacturing-process analysis of an infrared cooker, investigating how its major components are made and why specific materials and processes are chosen.",
-    image: galleryLabImg,
+    image: reverseImg1,
     accentColor: "#6C5CE7",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(108, 92, 231, 0.45) 0%, rgba(40, 25, 90, 0.75) 45%, rgba(10, 6, 24, 0.96) 100%)",
@@ -478,33 +466,42 @@ export const PROJECTS: Project[] = [
       "Technical Research",
       "Refractory Materials",
     ],
-    gallery: [
-      {
-        src: galleryLabImg,
-        caption: "Component inspection and materials investigation",
-      },
-      {
-        src: galleryCadImg,
-        caption: "CAD model developed from the reverse-engineering process",
-      },
-      {
-        src: galleryPcbImg,
-        caption: "Electrical components of the infrared cooker",
-      },
-    ],
     sections: [
       {
         heading: "Introduction",
+        media: {
+          src: reverseImg1,
+          type: "image",
+          align: "right",
+          alt: "Reverse engineering research presentation and component teardown",
+        },
         paragraphs: [
           "This project involved the **reverse engineering and manufacturing-process analysis of an infrared cooker**, with particular attention given to understanding how its major components are manufactured and why specific materials and manufacturing processes are selected.",
           "The components investigated included the **glass top, heating coil, ceramic heating-coil housing, plastic outer casing, and metal casing**. For each component, the study considered the material used, the manufacturing process involved, and potential alternative materials or manufacturing methods that could provide improved performance.",
         ],
       },
       {
-        heading: "My Contribution",
+        heading: "Ceramic Housing & Materials Investigation",
+        media: {
+          src: reverseImg2,
+          type: "image",
+          align: "left",
+          alt: "Ceramic housing and refractory composite analysis",
+        },
         paragraphs: [
           "My primary focus was the **ceramic housing surrounding the heating coil**. I investigated the material and manufacturing process by studying information provided by IR cooker manufacturers and reviewing additional technical sources discussing similar applications.",
           "Based on this investigation, I identified the housing material as a **vermiculite-based refractory composite** and the manufacturing process as **ceramic powder pressing**.",
+        ],
+      },
+      {
+        heading: "CAD Modelling & Manufacturing Feasibility",
+        media: {
+          src: reverseImg3,
+          type: "image",
+          align: "right",
+          alt: "CAD model created from reverse-engineering process",
+        },
+        paragraphs: [
           "In addition to the materials and manufacturing analysis, I developed a **CAD model of the component**, translating the physical component and the information obtained during the reverse-engineering process into a digital representation.",
           "The project strengthened my experience in **reverse engineering, materials research, manufacturing-process analysis, technical research, and CAD modelling**.",
         ],
@@ -514,7 +511,7 @@ export const PROJECTS: Project[] = [
   {
     id: "movie-projector",
     title: "Vintage Movie Projector Replica",
-    category: "Manufacturing & Fabrication",
+    category: "Manufacturing Project",
     shortDesc:
       "A hand-built replica of a vintage movie projector, fabricated through woodworking, sheet-metal forming, welding, machining, and mechanical assembly.",
     image: manufacturingImg1,
@@ -536,23 +533,15 @@ export const PROJECTS: Project[] = [
       "Mechanical Assembly",
       "Fastening & Joining",
     ],
-    gallery: [
-      {
-        src: manufacturingImg1,
-        caption: "Hand-built replica of the vintage movie projector",
-      },
-      {
-        src: manufacturingImg2,
-        caption: "Fabricated components and assembly details",
-      },
-      {
-        src: manufacturingImg3,
-        caption: "Wooden housing and metal reel assembly",
-      },
-    ],
     sections: [
       {
         heading: "Introduction",
+        media: {
+          src: manufacturingImg1,
+          type: "image",
+          align: "right",
+          alt: "Hand-built vintage movie projector replica",
+        },
         paragraphs: [
           "This project was undertaken to develop practical familiarity with a range of **traditional manufacturing and fabrication techniques**, including woodworking, sheet-metal forming, smith forging, metal welding, fitting, and machining using a metal lathe.",
           "Our team designed and fabricated a **replica of a vintage movie projector**, requiring the integration of components manufactured from different materials and through different processes. Studying existing vintage projector designs, extracting appropriate dimensions, and modifying design features to suit our requirements were important parts of the development process.",
@@ -560,6 +549,12 @@ export const PROJECTS: Project[] = [
       },
       {
         heading: "Design and Manufacturing",
+        media: {
+          src: manufacturingImg2,
+          type: "image",
+          align: "left",
+          alt: "Fabricated components and mechanical assembly details",
+        },
         paragraphs: [
           "Different materials and manufacturing methods were selected according to the functional and structural requirements of each component:",
         ],
@@ -573,6 +568,12 @@ export const PROJECTS: Project[] = [
       },
       {
         heading: "Assembly",
+        media: {
+          src: manufacturingImg3,
+          type: "image",
+          align: "right",
+          alt: "Wooden housing and metal reel assembly",
+        },
         paragraphs: [
           "The aluminium components were formed into the required geometries using **sheet-metal forming**, while the steel structural members were joined through **metal welding**. The wooden and metal components were assembled using a combination of **screw fasteners and adhesives**.",
           "The project provided hands-on experience in **design for manufacture, material selection, fabrication, machining, sheet-metal work, welding, woodworking, mechanical assembly, and translating a conceptual design into a physical product**.",

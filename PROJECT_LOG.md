@@ -42,8 +42,8 @@
 | `src/components/Intro.tsx` | Done (iteration 8) | White "Who am I?" about section with `id="about"` anchor — single-line title, 4:3 floated image tile sitting alongside the title and bio text, text wraps naturally around the image and takes full container width below it with zero empty space; static (parallax removed) so the section flows directly into Projects with no white void |
 | `src/lib/scrollToSection.ts` | Done (iteration 3) | Smooth scroll helper for static sections — no parallax correction needed anymore (all `SECTION_RATES` = 0), targets each section's exact layout top |
 | `src/components/Projects.tsx` | Done (iteration 4) | "My Projects" section (`id="projects"`) — 8 interactive project cards displaying image, title, 3 primary skills + `+N` count badge, compact intro, and "View Project" action; uniform tile heights; entire card clickable with hover lift and glow |
-| `src/components/ProjectDetail.tsx` | Done (iteration 2) | Full-page project detail view — hero (category, title, short intro, technical-area tags), attention-grabbing multi-media gallery (images + autoplaying muted videos with play-badge thumbnails), free-form content sections with `**bold**` emphasis, and prev/next footer nav |
-| `src/data/projectsData.ts` | Rewritten (Session 18) | 8 real engineering projects (Otter robot, Argo micromouse, DIYAKAWA 3.0, Bicycle instrumentation, SCARA vision pick-and-place, Factory floor optimization, IR cooker reverse engineering, Movie projector replica) — `Project` model now uses `sections` (heading + paragraphs/bullets) and `gallery` items with `type: "image" | "video"`; technical areas as tags |
+| `src/components/ProjectDetail.tsx` | Done (iteration 3) | Full-page editorial project detail view — floating uncropped media with seamless text wrapping, native video aspect ratios (no black letterbox bars), hero media layout with responsive stacking for split-screen / mobile, larger titles/subtitles/content typography, and zero captions |
+| `src/data/projectsData.ts` | Rewritten (Session 22) | 8 engineering projects updated with owner-uploaded media only (all stock images removed), updated category badges, updated project card cover images, and section inline media alignments |
 | `src/components/Contact.tsx` | Done (iteration 1) | White "Contact Me" section (`id="contact"`) after Projects — large left-aligned title, contact methods in 2 rows (Mobile/Email row 1, centered LinkedIn row 2), parallax cover (1.6×) |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
 | `components.json` | Created manually | shadcn config (`style: base-nova`, aliases `@/*` → `./src/*`) |
@@ -66,6 +66,47 @@
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
 
 ## Changelog / Build Log
+
+### 2026-09-07 — Session 22: Complete project detail editorial overhaul, alternating media with text wrapping, updated categories & project tile images
+
+- **Editorial Redesign of ProjectDetail (`src/components/ProjectDetail.tsx` iteration 3):**
+  - Removed old top gallery section, carousel slider, thumbnail strip, and caption descriptions across all projects.
+  - Implemented modern floating media blocks (`align-left` / `align-right`) allowing text paragraphs and bullet lists to wrap seamlessly around images/videos and expand full-width below them.
+  - Implemented responsive split-screen / mobile layout (`@media (max-width: 960px)`): Badge → Title → Skills/Tags → Media Block → Description/Paragraphs.
+- **Media & Aspect Ratio Guarantees (`src/index.css`):**
+  - Uncropped media display with natural aspect ratios (`object-fit: contain`, `max-height: 520px`, `background: transparent`).
+  - Native video aspect ratios with zero black letterbox sidebars.
+  - Increased typography scale: Title (`clamp(2.3rem, 4.5vw, 3.8rem)`), Headings (`clamp(1.4rem, 2.2vw, 1.85rem)`), Subtitle (`clamp(1.1rem, 1.6vw, 1.25rem)`), Paragraphs (`clamp(1.04rem, 1.35vw, 1.18rem)` with `line-height: 1.85`).
+- **Data & Project Specific Configurations (`src/data/projectsData.ts`):**
+  - Removed all stock/placeholder image imports; only user-uploaded media from `media/` is utilized.
+  - Updated category badges:
+    1. Otter: `Mechatronic System Design Project`
+    2. Argo: `Micromouse Robot Project`
+    3. DIYAKAWA 3.0: `Underwater Robotics Project`
+    4. CV Pick & Place: `Mechatronic Systems Engineering Project`
+    5. Bicycle & Rider Data: `Instrumentation System Design Project`
+    6. Factory Floor Optimization: `Productions and Operations Management Project`
+    7. Reverse Engineering: `Reverse engineering project`
+    8. Vintage Movie Projector: `Manufacturing Project`
+  - Updated "My Projects" tile cover images:
+    1. Otter: `otter-1.png` (`Visionary Studio.png`)
+    2. Argo: `argo-1.jpeg`
+    3. DIYAKAWA 3.0: `diyakawa-6.jpeg` (`WhatsApp Image 2026-09-05 at 15.30.18`)
+    4. CV Pick & Place: `scara-2.jpeg` (`WhatsApp Image 2026-09-05 at 15.18.23`)
+    5. Bicycle & Rider Data: `instrumentation-1.jpeg`
+    6. Factory Floor: `ferentino.jpeg`
+    7. Reverse Engineering: `reverse-1.png` (`Blue Grey Simple ... (1).png`)
+    8. Manufacturing: `manufacturing-1.jpeg`
+  - Project detail custom layouts:
+    - **Otter Robot**: Title in single sentence, Section 1 image on right (`otter-1.png`), Section 2 image on left (`otter-2.png`).
+    - **Micromouse Argo**: Single uncropped robot image (`argo-1.jpeg`) on right next to title/intro, wrapped content.
+    - **DIYAKAWA 3.0**: Image `diyakawa-5.jpeg` on right of hero/intro; native aspect video `diyakawa-demo-1.mp4` on left of control architecture; remaining images/videos alternating left/right (`diyakawa-6.jpeg`, `diyakawa-demo-2.mp4`, `diyakawa-2.jpeg`, `diyakawa-7.jpeg`).
+    - **Bicycle & Rider Data**: Single uncropped image (`instrumentation-1.jpeg`) on right next to title/intro.
+    - **CV Pick & Place**: Demonstration video `scara-demo.mp4` on left of hero/intro; alternating images (`scara-1.jpeg`, `scara-2.jpeg`), with team group photo `scara-3.jpeg` at last.
+    - **Factory Floor Optimization**: Pure text-based layout, zero images.
+    - **Reverse Engineering**: Alternating images `reverse-1.png` (right), `reverse-2.png` (left), `reverse-3.png` (right).
+    - **Vintage Movie Projector**: Alternating images `manufacturing-1.jpeg` (right), `manufacturing-2.jpeg` (left), `manufacturing-3.jpeg` (right).
+- **Build verified:** `bun tsc --noEmit` passed with 0 errors; `bun run build` bundled 62 modules cleanly.
 
 ### 2026-09-06 — Session 21: Removed the white void between About Me and My Projects
 

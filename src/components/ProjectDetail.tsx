@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import type { Project } from "../data/projectsData";
+import { useEffect } from "react";
+import type { Project, ProjectMediaItem } from "../data/projectsData";
 
 interface ProjectDetailProps {
   project: Project;
@@ -20,28 +20,57 @@ function RichText({ text }: { text: string }) {
   );
 }
 
+/** Media renderer component for inline or hero media without letterboxing or cropping */
+function MediaBlock({
+  media,
+  className = "",
+}: {
+  media: ProjectMediaItem;
+  className?: string;
+}) {
+  const alignClass = media.align ? `align-${media.align}` : "align-right";
+
+  return (
+    <div className={`project-media-card ${alignClass} ${className}`}>
+      {media.type === "video" ? (
+        <video
+          src={media.src}
+          className="project-media-video"
+          controls
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+      ) : (
+        <img
+          src={media.src}
+          alt={media.alt || "Project showcase"}
+          className="project-media-img"
+          loading="lazy"
+        />
+      )}
+    </div>
+  );
+}
+
 export function ProjectDetail({
   project,
   onBack,
   onSelectOtherProject,
   allProjects,
 }: ProjectDetailProps) {
-  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
-
-  // Reset active media when project changes and scroll to top
+  // Scroll to top when project changes
   useEffect(() => {
-    setActiveMediaIndex(0);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [project.id]);
 
   const currentIndex = allProjects.findIndex((p) => p.id === project.id);
-  // These fallbacks always resolve to a valid project (list is never empty)
   const prevProject =
     (currentIndex > 0 ? allProjects[currentIndex - 1] : allProjects[allProjects.length - 1])!;
   const nextProject =
     (currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : allProjects[0])!;
-
-  const activeMedia = project.gallery[activeMediaIndex];
 
   return (
     <div
@@ -79,109 +108,66 @@ export function ProjectDetail({
         <div className="project-detail-nav-title">{project.title}</div>
       </header>
 
-      {/* Project Header Banner */}
-      <section className="project-detail-hero">
-        <div className="project-detail-hero-content">
-          <div className="project-detail-badge">{project.category}</div>
-          <h1 className="project-detail-title">{project.title}</h1>
-          <p className="project-detail-subtitle">{project.shortDesc}</p>
-
-          <div className="project-tags-list">
-            {project.tags.map((tag) => (
-              <span key={tag} className="project-tag-pill">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Multi-Media Gallery Showcase */}
-      <section className="project-gallery-section">
-        <div className="project-gallery-featured-wrap">
-          {activeMedia?.type === "video" ? (
-            <video
-              src={activeMedia.src}
-              className="project-gallery-featured-video"
-              controls
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-            />
-          ) : (
-            <img
-              src={activeMedia?.src || project.image}
-              alt={activeMedia?.caption || project.title}
-              className="project-gallery-featured-img"
-            />
+      {/* Main Content Container */}
+      <main className="project-detail-main">
+        {/* Project Header Banner / Hero Section */}
+        <section
+          className={`project-detail-hero ${
+            project.heroLayout === "media-left" ? "hero-media-left" : ""
+          } ${project.heroMedia ? "has-hero-media" : ""}`}
+        >
+          {/* Hero Media (if present) */}
+          {project.heroMedia && (
+            <MediaBlock media={project.heroMedia} className="project-hero-media" />
           )}
-          <div className="project-gallery-caption">
-            {activeMedia?.caption || project.title}
-          </div>
-        </div>
 
-        {project.gallery.length > 1 && (
-          <div className="project-gallery-thumbnails">
-            {project.gallery.map((item, idx) => (
-              <button
-                key={idx}
-                type="button"
-                className={`project-gallery-thumb-btn ${
-                  idx === activeMediaIndex ? "active" : ""
-                }`}
-                onClick={() => setActiveMediaIndex(idx)}
-                aria-label={`View media ${idx + 1}`}
-              >
-                {item.type === "video" ? (
-                  <>
-                    <video
-                      src={item.src}
-                      muted
-                      playsInline
-                      preload="metadata"
-                      className="project-gallery-thumb-video"
-                    />
-                    <span className="thumb-play" aria-hidden="true" />
-                  </>
-                ) : (
-                  <img
-                    src={item.src}
-                    alt={item.caption}
-                    className="project-gallery-thumb-img"
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        )}
-      </section>
+          <div className="project-detail-hero-content">
+            <div className="project-detail-badge">{project.category}</div>
+            <h1 className="project-detail-title">{project.title}</h1>
 
-      {/* In-depth Project Documentation */}
-      <main className="project-detail-body">
-        {project.sections.map((section, idx) => (
-          <section className="project-detail-block" key={idx}>
-            <h2 className="project-detail-heading">{section.heading}</h2>
-            {section.paragraphs?.map((paragraph, i) => (
-              <p className="project-detail-text" key={i}>
-                <RichText text={paragraph} />
-              </p>
-            ))}
-            {section.bullets && section.bullets.length > 0 && (
-              <ul className="project-bullet-list">
-                {section.bullets.map((bullet, i) => (
-                  <li key={i} className="project-bullet-item">
-                    <span className="project-bullet-dot" />
-                    <span>
-                      <RichText text={bullet} />
-                    </span>
-                  </li>
-                ))}
-              </ul>
+            <div className="project-tags-list">
+              {project.tags.map((tag) => (
+                <span key={tag} className="project-tag-pill">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {project.shortDesc && (
+              <p className="project-detail-subtitle">{project.shortDesc}</p>
             )}
-          </section>
-        ))}
+          </div>
+        </section>
+
+        {/* Project In-Depth Documentation Sections */}
+        <div className="project-detail-body">
+          {project.sections.map((section, idx) => (
+            <section className="project-detail-block" key={idx}>
+              <h2 className="project-detail-heading">{section.heading}</h2>
+
+              {section.media && <MediaBlock media={section.media} />}
+
+              {section.paragraphs?.map((paragraph, i) => (
+                <p className="project-detail-text" key={i}>
+                  <RichText text={paragraph} />
+                </p>
+              ))}
+
+              {section.bullets && section.bullets.length > 0 && (
+                <ul className="project-bullet-list">
+                  {section.bullets.map((bullet, i) => (
+                    <li key={i} className="project-bullet-item">
+                      <span className="project-bullet-dot" />
+                      <span>
+                        <RichText text={bullet} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
       </main>
 
       {/* Bottom Navigation between projects */}
