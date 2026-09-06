@@ -71,7 +71,7 @@ export function Hero() {
         <p className="hero-eyebrow">Engineering Portfolio</p>
         <h1 id="hero-title">Vihanga C. Kumanayaka</h1>
         <p className="hero-subtitle">
-          Engineering projects and the expertise gained along the way — built,
+          Engineering projects and the expertise gained along the way, built,
           shipped, and documented.
         </p>
         <div className="hero-actions">

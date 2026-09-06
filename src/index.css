@@ -678,6 +678,9 @@ html {
   line-height: 1.35;
   color: #ffffff;
   letter-spacing: -0.01em;
+  min-height: 3.3rem;
+  display: flex;
+  align-items: flex-start;
   transition: color 0.25s var(--ease);
 }
 
@@ -690,6 +693,8 @@ html {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+  min-height: 2.2rem;
+  align-items: center;
   margin-bottom: 0.9rem;
 }
 
@@ -708,9 +713,21 @@ html {
     background 0.25s var(--ease);
 }
 
+.project-tile-tag-more {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 700;
+}
+
 .project-tile:hover .project-tile-tag {
   border-color: rgba(255, 255, 255, 0.18);
   color: rgba(255, 255, 255, 0.88);
+}
+
+.project-tile:hover .project-tile-tag-more {
+  border-color: var(--project-accent, rgba(255, 255, 255, 0.35));
+  color: var(--project-accent, #ffffff);
 }
 
 /* Compact Intro */
@@ -719,7 +736,8 @@ html {
   font-size: 0.9rem;
   line-height: 1.65;
   color: rgba(255, 255, 255, 0.62);
-  flex-grow: 1;
+  flex: 1 1 auto;
+  min-height: 4.8rem;
 }
 
 /* Footer Action */
@@ -727,6 +745,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: auto;
   padding-top: 0.85rem;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 }

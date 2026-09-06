@@ -61,19 +61,19 @@ export const PROJECTS: Project[] = [
     title: "Otter Body Mechanism Mimicking Robot",
     category: "Mechatronic System Design",
     shortDesc:
-      "An aquatic robot inspired by an otter's swimming biomechanics — it generates forward thrust through body undulation and limb paddling, engineered through linkage design, multibody dynamics, and hydrodynamic analysis.",
+      "An aquatic robot inspired by an otter's swimming biomechanics. It generates forward thrust through body undulation and limb paddling, engineered through linkage design, multibody dynamics, and hydrodynamic analysis.",
     image: oceanWavesImg,
     accentColor: "#00CEC9",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(0, 206, 201, 0.42) 0%, rgba(8, 70, 75, 0.75) 45%, rgba(4, 15, 20, 0.96) 100%)",
     tags: [
-      "Mechanical Design",
+      "Bio-Inspired Robotics",
       "Mechatronic System Design",
+      "Control Systems",
+      "Mechanical Design",
       "Linkage Mechanism Design",
-      "Bio-inspired Robotics",
       "Multibody Dynamics",
       "Hydrodynamic Analysis",
-      "Control Systems",
       "Electronic Circuit Design",
     ],
     gallery: [
@@ -94,7 +94,7 @@ export const PROJECTS: Project[] = [
       {
         heading: "Introduction",
         paragraphs: [
-          "The **ME3261 – Mechatronic System Design Project** is a three-semester engineering project focused on developing a complete mechatronic system for industrial application, supported by a structured design process, analysis, and technical justification.",
+          "The **ME3261: Mechatronic System Design Project** is a three-semester engineering project focused on developing a complete mechatronic system for industrial application, supported by a structured design process, analysis, and technical justification.",
           "My proposed system is an **aquatic robot inspired by the swimming biomechanics of an otter**. Rather than relying solely on conventional propellers, the robot is designed to generate forward thrust through a combination of **body undulation and limb paddling**. The project explores how the distinctive morphology and swimming motion of an otter can be translated into an engineered robotic system through **mechanical linkage design, multibody dynamics, hydrodynamic analysis, control systems, and electronic circuit design**.",
           "Computer vision is also planned for integration into the system to enable capabilities such as **underwater navigation and object detection**, with the long-term objective of developing a robot capable of autonomous operation in aquatic environments.",
         ],
@@ -110,7 +110,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "micromouse-argo",
-    title: "Micromouse Robot — Argo",
+    title: "Micromouse Robot: Argo",
     category: "High-Speed Autonomous Robotics",
     shortDesc:
       "Argo is an autonomous Micromouse robot that explores unknown mazes, determines the fastest route to the centre, and sprints through it at high speed.",
@@ -120,6 +120,8 @@ export const PROJECTS: Project[] = [
       "radial-gradient(circle at center, rgba(255, 107, 107, 0.42) 0%, rgba(85, 25, 45, 0.75) 45%, rgba(18, 6, 15, 0.96) 100%)",
     tags: [
       "Robotics",
+      "SLAM",
+      "Embedded Navigation",
       "Autonomous Navigation",
       "Embedded Systems",
       "ESP32 Programming",
@@ -129,13 +131,12 @@ export const PROJECTS: Project[] = [
       "Sensor Fusion",
       "Extended Kalman Filter",
       "Motor Control",
-      "SLAM",
       "CAD Design",
     ],
     gallery: [
       {
         src: argoImg,
-        caption: "Argo — assembled micromouse robot platform",
+        caption: "Argo: assembled micromouse robot platform",
       },
       {
         src: micromouseImg,
@@ -180,22 +181,22 @@ export const PROJECTS: Project[] = [
     title: "DIYAKAWA 3.0",
     category: "Autonomous Underwater Robotics",
     shortDesc:
-      "A University of Moratuwa autonomous underwater vehicle with eight BLDC thrusters and IMU-based orientation and depth control — shortlisted to compete at SAUVC 2026.",
+      "A University of Moratuwa autonomous underwater vehicle with eight BLDC thrusters and IMU-based orientation and depth control, shortlisted to compete at SAUVC 2026.",
     image: diyakawaImg4,
     accentColor: "#4FACFE",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(79, 172, 254, 0.42) 0%, rgba(20, 60, 110, 0.75) 45%, rgba(6, 14, 28, 0.96) 100%)",
     tags: [
       "Underwater Robotics",
+      "Electronic Circuit Design",
+      "Waterproofing",
       "Robotic System Design",
       "Mechanical Structure Design",
-      "Waterproofing",
       "CAD Modelling",
       "Embedded Systems",
       "BLDC Motor Control",
       "Bidirectional ESCs",
       "Power Electronics",
-      "Electronic Circuit Design",
       "Electrical Safety",
       "Sensor Integration",
       "Depth Sensing",
@@ -210,7 +211,7 @@ export const PROJECTS: Project[] = [
       },
       {
         src: diyakawaImg4,
-        caption: "DIYAKAWA 3.0 — the SAUVC 2026 autonomous underwater vehicle",
+        caption: "DIYAKAWA 3.0: the SAUVC 2026 autonomous underwater vehicle",
       },
       {
         src: diyakawaVideo2,
@@ -285,18 +286,19 @@ export const PROJECTS: Project[] = [
     title: "Bicycle & Rider Data Gathering System",
     category: "Instrumentation & IoT",
     shortDesc:
-      "An instrumentation and IoT system that collects, processes, and presents bicycle and rider performance data — using an Extended Kalman Filter to counter sensor drift, offset, and noise.",
+      "An instrumentation and IoT system that collects, processes, and presents bicycle and rider performance data, using an Extended Kalman Filter to counter sensor drift, offset, and noise.",
     image: instrumentationImg,
     accentColor: "#55EFC4",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(85, 239, 196, 0.4) 0%, rgba(12, 85, 70, 0.75) 45%, rgba(4, 18, 16, 0.96) 100%)",
     tags: [
       "Instrumentation Systems",
+      "Kalman Filter",
+      "Embedded Systems",
       "Sensor Integration",
       "Sensor Fusion",
       "Extended Kalman Filter",
       "State Estimation",
-      "Embedded Systems",
       "Measurement Systems",
       "Error Mitigation",
       "IoT",
@@ -348,11 +350,11 @@ export const PROJECTS: Project[] = [
     tags: [
       "Robotics",
       "Computer Vision",
+      "Embedded Systems",
       "YOLOv8",
       "Object Detection",
       "Image Processing",
       "Raspberry Pi",
-      "Embedded Systems",
       "Robotic Manipulation",
       "Automated Pick-and-Place",
     ],
@@ -405,13 +407,13 @@ export const PROJECTS: Project[] = [
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(253, 203, 110, 0.4) 0%, rgba(120, 78, 22, 0.75) 45%, rgba(24, 16, 8, 0.96) 100%)",
     tags: [
-      "Industrial Engineering",
       "Production Flow Analysis",
       "Process Optimization",
+      "Tecnomatix",
+      "Industrial Engineering",
       "Factory Layout Analysis",
       "Material Handling Systems",
       "Workflow Analysis",
-      "Tecnomatix",
       "Industrial Data Collection",
     ],
     gallery: [
@@ -462,19 +464,19 @@ export const PROJECTS: Project[] = [
     title: "Reverse Engineering of an Infrared Cooker",
     category: "Reverse Engineering & Materials",
     shortDesc:
-      "A reverse-engineering and manufacturing-process analysis of an infrared cooker — investigating how its major components are made and why specific materials and processes are chosen.",
+      "A reverse-engineering and manufacturing-process analysis of an infrared cooker, investigating how its major components are made and why specific materials and processes are chosen.",
     image: galleryLabImg,
     accentColor: "#6C5CE7",
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(108, 92, 231, 0.45) 0%, rgba(40, 25, 90, 0.75) 45%, rgba(10, 6, 24, 0.96) 100%)",
     tags: [
       "Reverse Engineering",
+      "CAD Modelling",
+      "Product Analysis",
       "Materials Characterization",
       "Manufacturing Process Analysis",
       "Technical Research",
       "Refractory Materials",
-      "CAD Modelling",
-      "Product Analysis",
     ],
     gallery: [
       {
@@ -520,9 +522,11 @@ export const PROJECTS: Project[] = [
     gradientBackdrop:
       "radial-gradient(circle at center, rgba(225, 112, 85, 0.45) 0%, rgba(100, 40, 22, 0.75) 45%, rgba(20, 8, 8, 0.96) 100%)",
     tags: [
+      "Manufacturing Technologies",
+      "Design for Manufacturing",
+      "Product Development",
       "Manufacturing Engineering",
       "Mechanical Fabrication",
-      "Design for Manufacturing",
       "Material Selection",
       "Woodworking",
       "Sheet-Metal Forming",
@@ -531,7 +535,6 @@ export const PROJECTS: Project[] = [
       "Metal Lathe Operations",
       "Mechanical Assembly",
       "Fastening & Joining",
-      "Product Development",
     ],
     gallery: [
       {

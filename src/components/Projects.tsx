@@ -18,7 +18,7 @@ export function Projects({ onViewDetails }: ProjectsProps) {
             My Projects
           </h2>
           <p className="projects-subtitle">
-            Engineering systems built from first principles — from embedded
+            Engineering systems built from first principles, from embedded
             firmware to full mechanical assemblies.
           </p>
         </div>
@@ -53,6 +53,10 @@ function ProjectTile({ project, onViewDetails }: TileProps) {
     }
   };
 
+  const MAX_VISIBLE_TAGS = 3;
+  const visibleTags = project.tags ? project.tags.slice(0, MAX_VISIBLE_TAGS) : [];
+  const remainingTagsCount = project.tags ? project.tags.length - MAX_VISIBLE_TAGS : 0;
+
   return (
     <article
       className="project-tile"
@@ -83,14 +87,19 @@ function ProjectTile({ project, onViewDetails }: TileProps) {
       <div className="project-tile-content">
         <h3 className="project-tile-title">{project.title}</h3>
 
-        {/* Skills / tags */}
-        {project.tags && project.tags.length > 0 && (
+        {/* Skills / tags (3 skills + remaining count) */}
+        {visibleTags.length > 0 && (
           <div className="project-tile-tags" aria-label="Project technologies">
-            {project.tags.map((tag) => (
+            {visibleTags.map((tag) => (
               <span key={tag} className="project-tile-tag">
                 {tag}
               </span>
             ))}
+            {remainingTagsCount > 0 && (
+              <span className="project-tile-tag project-tile-tag-more">
+                +{remainingTagsCount}
+              </span>
+            )}
           </div>
         )}
 
@@ -120,4 +129,5 @@ function ProjectTile({ project, onViewDetails }: TileProps) {
     </article>
   );
 }
+
 
