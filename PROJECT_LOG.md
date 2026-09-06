@@ -39,7 +39,7 @@
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
 | `src/components/Hero.tsx` | Done (iteration 5) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA; parallax now applied synchronously on scroll (no rAF lag) |
-| `src/components/Intro.tsx` | Done (iteration 5) | White "intro of me" section with `id="about"` anchor — title, paragraphs, and 4:3 right-aligned image tile with rounded corners & thick black border; parallax sweeps up (1.2×), decelerates smoothly, then scrolls away naturally at 1× — applied synchronously, never frozen, never overshoots |
+| `src/components/Intro.tsx` | Done (iteration 6) | White "Who am I ?" about section with `id="about"` anchor — title, real owner bio (3 paragraphs with `<strong>` emphasis), and 4:3 right-aligned image tile with rounded corners & thick black border; parallax sweeps up (1.2×), decelerates smoothly, then scrolls away naturally at 1× — applied synchronously, never frozen, never overshoots |
 | `src/lib/scrollToSection.ts` | Done (iteration 2) | Parallax-aware smooth scroll helper — measures the transform-invariant layout top by neutralizing the inline transform, so nav links land the section top exactly at the viewport top from any scroll position |
 | `src/components/Projects.tsx` | Done (iteration 1) | "My Projects" section (`id="projects"`) — 8 expandable image tiles in a 3-per-row grid, gradient-backed expand bodies, "Explore Project" arrow into ProjectDetail, parallax cover (1.45×) over Intro |
 | `src/components/ProjectDetail.tsx` | Done | Full-page project detail view with hero, meta, tags, gallery, specs, and prev/next footer nav |
@@ -63,6 +63,13 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-06 — Session 17: Real "About Me" content in Intro section
+
+- **`src/components/Intro.tsx`:** title changed from "intro of me" → "Who am I ?"; replaced the two italic placeholder filler paragraphs with the owner's real 3-paragraph about-me bio (`ABOUT_ME_PARAGRAPHS`), using `<strong>` for the emphasis terms (name, degree + university, technical interest areas, karate team, colours award, closing mindset line).
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (54 modules).
 
 ## Changelog / Build Log
 
