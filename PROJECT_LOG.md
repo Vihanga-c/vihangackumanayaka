@@ -38,7 +38,7 @@
 |---|---|---|
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
-| `src/components/Hero.tsx` | Done (iteration 10) | Hero landing page: full-viewport Grainient background + name, degree + university block, shimmer-sweep tagline (two lines that shimmer sequentially top→bottom via a CSS gradient sweep + React toggle), and single glass "Get my CV" CTA — name and degree render on single lines with matching widths (degree = 80% of name width so it sits below the tagline size), larger tagline typography; static (no parallax) |
+| `src/components/Hero.tsx` | Done (iteration 11) | Hero landing page: full-viewport Grainient background + name, degree + university block, shimmer-sweep tagline (two lines that shimmer sequentially top→bottom via a CSS gradient sweep + React toggle), and single glass "Get my CV" CTA that downloads the owner's CV PDF (`src/assets/cv/Vihanga-Chamodya-Kumanayaka-CV.pdf`) — name and degree render on single lines with matching widths (degree = 80% of name width so it sits below the tagline size), larger tagline typography; static (no parallax) |
 | `src/components/Intro.tsx` | Done (iteration 9) | White "Who am I ?" about section with `id="about"` anchor — larger title (with space before "?"), owner's portrait (`src/assets/myself.jpg`) floated right at its natural 3:4 aspect ratio (uncropped, `object-fit: contain`), text wraps around the image and expands full-width below it; static so the section flows directly into Projects |
 | `src/lib/scrollToSection.ts` | Done (iteration 3) | Smooth scroll helper for static sections — no parallax correction needed anymore (all `SECTION_RATES` = 0), targets each section's exact layout top |
 | `src/components/Projects.tsx` | Done (iteration 4) | "My Projects" section (`id="projects"`) — 8 interactive project cards displaying image, title, 3 primary skills + `+N` count badge, compact intro, and "View Project" action; uniform tile heights; entire card clickable with hover lift and glow |
@@ -64,6 +64,16 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-07 — Session 28: "Get my CV" button now downloads the owner's CV PDF
+
+- **Copied** the CV from `media/Vihanga Chamodya Kumanayaka - CV.pdf` → `src/assets/cv/Vihanga-Chamodya-Kumanayaka-CV.pdf` so it is versioned in the repo (the `media/` folder stays untracked) and bundled into `dist/`.
+- **`bun-env.d.ts`:** added `*.pdf` module declaration.
+- **`src/components/Hero.tsx` (iteration 11):** the "Get my CV" glass button is now an `<a>` pointing at the imported PDF with `download="Vihanga Chamodya Kumanayaka - CV.pdf"` (was a dead `#cv` anchor), so clicking triggers an automatic file download instead of a navigation.
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (63 modules) — emits `Vihanga-Chamodya-Kumanayaka-CV-7mm6vjc0.pdf` (0.30 MB) into `dist/`.
+- **Serving verified:** dev server serves the PDF asset at `/_bun/asset/677474261b724cc0.pdf` with `Content-Type: application/pdf` (298,857 bytes); production goes through Vercel static hosting of `dist/` per `vercel.json`.
 
 ## Changelog / Build Log
 

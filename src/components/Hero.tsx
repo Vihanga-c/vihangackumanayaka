@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Grainient from "./Grainient";
+import cvPdf from "../assets/cv/Vihanga-Chamodya-Kumanayaka-CV.pdf";
 
 export function Hero() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -122,7 +123,11 @@ export function Hero() {
           </p>
         </div>
         <div className="hero-actions">
-          <a className="btn btn-secondary" href="#cv">
+          <a
+            className="btn btn-secondary"
+            href={cvPdf}
+            download="Vihanga Chamodya Kumanayaka - CV.pdf"
+          >
             Get my CV
           </a>
         </div>

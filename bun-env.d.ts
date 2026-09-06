@@ -33,6 +33,11 @@ declare module "*.mp4" {
   export = path;
 }
 
+declare module "*.pdf" {
+  const path: string;
+  export = path;
+}
+
 declare module "*.css" {}
 
 declare module "*.module.css" {
