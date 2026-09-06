@@ -74,7 +74,8 @@
   1. **Navbar active-section bug on mobile (`src/components/Navbar.tsx`):** the 45%-viewport threshold can never be crossed by the last section on short viewports (the page runs out of scroll before the contact section's top reaches 45% of the viewport), so "Get in touch" was never highlighted at the page bottom on mobile. Fixed: the last nav section is now counted as active whenever any part of it is on screen (`threshold = innerHeight` for the last item).
   2. **Flaky portrait test:** the lazy-loaded `myself.jpg` sometimes wasn't loaded within the default 5s on first production hit; the test now waits for `img.complete && naturalWidth > 0` (15s poll) before asserting visibility.
 - **Test-only changes:** `tests/about.spec.ts` portrait test made load-aware.
-- **Re-verified:** local suite 52/52; production suite re-run 52/52 after the nav fix.
+- **Re-verified:** local suite 52/52; production suite re-run 52/52 after the nav fix (full suite against `https://vihangackumanayaka.vercel.app` — 52/52 passed in 39.7s).
+- **New file:** `playwright.prod.config.ts` — run the same suite against the live site with `bunx playwright test -c playwright.prod.config.ts` (baseURL → vercel.app, no local webServer).
 - **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (63 modules).
 - **Note:** two follow-up commits were pushed after the initial release — the nav fix + test fix (committed to develop, then re-merged into main so production carries the fix).
 
