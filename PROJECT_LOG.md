@@ -37,7 +37,7 @@
 | Module | Status | Description |
 |---|---|---|
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
-| `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
+| `src/components/Navbar.tsx` | Done (iteration 4) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact`; active-section highlighting (last section counts as active while any part is on screen) |
 | `src/components/Hero.tsx` | Done (iteration 11) | Hero landing page: full-viewport Grainient background + name, degree + university block, shimmer-sweep tagline (two lines that shimmer sequentially top→bottom via a CSS gradient sweep + React toggle), and single glass "Get my CV" CTA that downloads the owner's CV PDF (`src/assets/cv/Vihanga-Chamodya-Kumanayaka-CV.pdf`) — name and degree render on single lines with matching widths (degree = 80% of name width so it sits below the tagline size), larger tagline typography; static (no parallax) |
 | `src/components/Intro.tsx` | Done (iteration 10) | White "Who am I ?" about section with `id="about"` anchor — larger title (with space before "?"), owner's portrait (`src/assets/myself.jpg`) floated right at its natural 3:4 aspect ratio (uncropped, `object-fit: contain`), text wraps around the image and expands full-width below it; static so the section flows directly into Projects. Bio = owner's 4-paragraph about-me text (degree/university + interests, GPA 3.69/4.00 + Dean's List, karate + Colours, closing growth mindset) |
 | `src/lib/scrollToSection.ts` | Done (iteration 3) | Smooth scroll helper for static sections — no parallax correction needed anymore (all `SECTION_RATES` = 0), targets each section's exact layout top |
@@ -64,6 +64,19 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-07 — Session 33: Release to main + production verification (52/52 E2E on vercel.app)
+
+- **Release:** `develop` (1850a26) fast-forward-merged into `main` and pushed — Vercel production deployment succeeded (deployment status `success`). Live site: `https://vihangackumanayaka.vercel.app` serves the finalised website (title verified, CV PDF served with `Content-Disposition: attachment; filename="Vihanga Chamodya Kumanayaka - CV.pdf"`, 298,857 bytes, `application/pdf`).
+- **E2E against production:** ran the full suite against `https://vihangackumanayaka.vercel.app` — 50/52 passed on the first production run. Two findings:
+  1. **Navbar active-section bug on mobile (`src/components/Navbar.tsx`):** the 45%-viewport threshold can never be crossed by the last section on short viewports (the page runs out of scroll before the contact section's top reaches 45% of the viewport), so "Get in touch" was never highlighted at the page bottom on mobile. Fixed: the last nav section is now counted as active whenever any part of it is on screen (`threshold = innerHeight` for the last item).
+  2. **Flaky portrait test:** the lazy-loaded `myself.jpg` sometimes wasn't loaded within the default 5s on first production hit; the test now waits for `img.complete && naturalWidth > 0` (15s poll) before asserting visibility.
+- **Test-only changes:** `tests/about.spec.ts` portrait test made load-aware.
+- **Re-verified:** local suite 52/52; production suite re-run 52/52 after the nav fix.
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (63 modules).
+- **Note:** two follow-up commits were pushed after the initial release — the nav fix + test fix (committed to develop, then re-merged into main so production carries the fix).
 
 ## Changelog / Build Log
 

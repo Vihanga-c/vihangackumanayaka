@@ -33,12 +33,12 @@ const server = serve({
       // SPA fallback
       const index = file(new URL("./index.html", DIST));
       return new Response(index, {
-        headers: { "Content-Type": MIME[".html"] },
+        headers: { "Content-Type": MIME[".html"] ?? "text/html; charset=utf-8" },
       });
     }
 
     const ext = pathname.substring(pathname.lastIndexOf(".")).toLowerCase();
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       "Content-Type": MIME[ext] ?? "application/octet-stream",
     };
     // Serve the CV with a deterministic download filename (the bundled URL

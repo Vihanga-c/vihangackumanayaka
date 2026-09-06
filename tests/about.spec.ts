@@ -14,6 +14,19 @@ test.describe("About Me", () => {
 
   test("renders the owner's portrait uncropped", async ({ page }) => {
     const img = page.locator(".intro-image");
+    await img.scrollIntoViewIfNeeded();
+    // The portrait is lazy-loaded; wait until it actually has content.
+    await expect
+      .poll(
+        () =>
+          img.evaluate(
+            (el) =>
+              (el as HTMLImageElement).complete &&
+              (el as HTMLImageElement).naturalWidth > 0,
+          ),
+        { timeout: 15000 },
+      )
+      .toBe(true);
     await expect(img).toBeVisible();
     await expect(img).toHaveAttribute("alt", /Vihanga C\. Kumanayaka/);
     const box = await img.boundingBox();

@@ -19,11 +19,21 @@ export function Navbar() {
   useEffect(() => {
     let raf = 0;
     const updateActive = () => {
-      const threshold = window.innerHeight * 0.45;
       let current: SectionId | null = null;
-      for (const { id } of NAV_ITEMS) {
+      for (let i = 0; i < NAV_ITEMS.length; i++) {
+        const item = NAV_ITEMS[i];
+        if (!item) continue;
+        const { id } = item;
         const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= threshold) current = id;
+        if (!el) continue;
+        // The last section can never clear the 45% threshold on short
+        // viewports (the page runs out of scroll), so count it as active
+        // whenever any part of it is on screen.
+        const threshold =
+          i === NAV_ITEMS.length - 1
+            ? window.innerHeight
+            : window.innerHeight * 0.45;
+        if (el.getBoundingClientRect().top <= threshold) current = id;
       }
       setActiveSection(current);
     };
