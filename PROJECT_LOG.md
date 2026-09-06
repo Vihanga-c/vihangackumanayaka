@@ -67,6 +67,13 @@
 
 ## Changelog / Build Log
 
+### 2026-09-07 — Session 31: "why ?" now quoted in About Me bio
+
+- **`src/components/Intro.tsx`:** the phrase now renders as "the *"why ?"* behind engineering principles" — added quotation marks around "why ?" as requested.
+- **Build verified:** `bun tsc --noEmit` passes; `bun run build` OK (63 modules).
+
+## Changelog / Build Log
+
 ### 2026-09-07 — Session 30: "why" → "why ?" in About Me bio
 
 - **`src/components/Intro.tsx`:** the phrase "explore the *why* behind engineering principles" now reads "explore the *why ?* behind engineering principles" (emphasized, matching the "Who am I ?" question-mark style used in the section title).
