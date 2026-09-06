@@ -38,13 +38,13 @@
 |---|---|---|
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
-| `src/components/Hero.tsx` | Done (iteration 6) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA — static (parallax removed so it sits flush against the Intro, no white gap) |
-| `src/components/Intro.tsx` | Done (iteration 8) | White "Who am I?" about section with `id="about"` anchor — single-line title, 4:3 floated image tile sitting alongside the title and bio text, text wraps naturally around the image and takes full container width below it with zero empty space; static (parallax removed) so the section flows directly into Projects with no white void |
+| `src/components/Hero.tsx` | Done (iteration 7) | Hero landing page: full-viewport Grainient background + name, degree line ("B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering"), tagline, and single glass "Get my CV" CTA — larger eye-catching typography across all hero content; static (no parallax) |
+| `src/components/Intro.tsx` | Done (iteration 9) | White "Who am I ?" about section with `id="about"` anchor — larger title (with space before "?"), owner's portrait (`src/assets/myself.jpg`) floated right at its natural 3:4 aspect ratio (uncropped, `object-fit: contain`), text wraps around the image and expands full-width below it; static so the section flows directly into Projects |
 | `src/lib/scrollToSection.ts` | Done (iteration 3) | Smooth scroll helper for static sections — no parallax correction needed anymore (all `SECTION_RATES` = 0), targets each section's exact layout top |
 | `src/components/Projects.tsx` | Done (iteration 4) | "My Projects" section (`id="projects"`) — 8 interactive project cards displaying image, title, 3 primary skills + `+N` count badge, compact intro, and "View Project" action; uniform tile heights; entire card clickable with hover lift and glow |
 | `src/components/ProjectDetail.tsx` | Done (iteration 3) | Full-page editorial project detail view — floating uncropped media with seamless text wrapping, native video aspect ratios (no black letterbox bars), hero media layout with responsive stacking for split-screen / mobile, larger titles/subtitles/content typography, and zero captions |
 | `src/data/projectsData.ts` | Rewritten (Session 22) | 8 engineering projects updated with owner-uploaded media only (all stock images removed), updated category badges, updated project card cover images, and section inline media alignments |
-| `src/components/Contact.tsx` | Done (iteration 1) | White "Contact Me" section (`id="contact"`) after Projects — large left-aligned title, contact methods in 2 rows (Mobile/Email row 1, centered LinkedIn row 2), parallax cover (1.6×) |
+| `src/components/Contact.tsx` | Done (iteration 2) | White "Contact Me" section (`id="contact"`) after Projects — large left-aligned title, contact methods in 2 rows (Mobile/Email row 1, centered LinkedIn row 2) with real contact details: `+94 71 460 3634`, `vihangackumanayaka@gmail.com`, LinkedIn unchanged |
 | `src/components/Grainient.jsx` + `.css` | Installed | WebGL2 grainy-gradient shader background (shadcn registry `@react-bits/Grainient-JS-CSS`, deps: `ogl`) |
 | `components.json` | Created manually | shadcn config (`style: base-nova`, aliases `@/*` → `./src/*`) |
 | `src/frontend.tsx` | Done | React entry point — mounts `<App />` into `#root` with StrictMode + HMR support |
@@ -64,6 +64,22 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-07 — Session 23: Larger hero typography + real About portrait, Hero degree/tagline, real contact details
+
+- **`src/components/Intro.tsx` (iteration 9) + `src/index.css`:**
+  - Title changed to `"Who am I ?"` (space before the question mark preserved) and enlarged: `clamp(2.6rem, 5.2vw, 5.2rem) → clamp(3.2rem, 6.5vw, 6.5rem)`.
+  - About image replaced with the owner's portrait from `media/Myself` → `src/assets/myself.jpg` (872×1163, natural 3:4 portrait). Removed the forced `aspect-ratio: 4 / 3` and `object-fit: cover` so the image is never cropped — `.intro-image` now `width: 100%; height: auto; object-fit: contain`, tile `width: clamp(280px, 32vw, 420px)`. Text wraps around the right-floated portrait and expands full-width below it. Mobile image max-width reduced to 520px.
+- **`src/components/Hero.tsx` (iteration 7) + `src/index.css`:**
+  - New `.hero-degree` line under the name: "B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering".
+  - Tagline replaced with: "Engineering projects, experiences and the skills honed along the way. Designed, Built, Executed and Documented."
+  - Larger typography: eyebrow `0.875 → 1.1rem`, name `clamp(2.5rem,7vw,4.5rem) → clamp(3.2rem,8vw,6rem)`, subtitle `clamp(1rem,2.5vw,1.25rem) → clamp(1.15rem,2.6vw,1.5rem)`, button `0.95 → 1.05rem` with larger padding; `.hero-content` max-width `920 → 1120px`.
+- **`src/components/Contact.tsx` (iteration 2):** phone → `+94 71 460 3634` (`tel:+94714603634`), email → `vihangackumanayaka@gmail.com`; LinkedIn unchanged.
+- **E2E verified (Playwright, headless Chromium, 1280×800):** intro title renders "Who am I ?" at 83px; portrait renders 398×530 exactly matching its natural 1.334 ratio (uncropped) and wraps the bio text around it; hero shows the new degree + tagline at 96px name; contact links show the new phone/email.
+- **Note:** corrected two obvious typos from the request — "Specalising" → "Specialising", "skilled honed" → "skills honed".
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK.
 
 ## Changelog / Build Log
 

@@ -1,4 +1,4 @@
-import introImage from "../assets/intro-profile.jpg";
+import introImage from "../assets/myself.jpg";
 
 const ABOUT_ME_PARAGRAPHS = [
   <>I am <strong>Vihanga C. Kumanayaka</strong>, a third-year <strong>B.Sc. (Hons) Mechanical Engineering undergraduate specializing in Mechatronic Systems Engineering at the University of Moratuwa, Sri Lanka</strong>. I am passionate about understanding how mechanical, electronic, and computational systems can be brought together to create intelligent and practical engineering solutions. My technical interests and experience span <strong>robotics, autonomous systems, mechanical engineering design, finite element analysis (FEA), embedded systems, sensor integration, computer vision, and electronic circuit design</strong>. I particularly enjoy working at the boundaries between disciplines, where solving a problem requires both engineering fundamentals and the willingness to explore unfamiliar technologies.</>,
@@ -25,7 +25,7 @@ export function Intro() {
           </div>
         </div>
         <h2 id="intro-title" className="intro-title">
-          Who am I?
+          Who am I ?
         </h2>
         {ABOUT_ME_PARAGRAPHS.map((paragraph, i) => (
           <p key={i} className="intro-text">

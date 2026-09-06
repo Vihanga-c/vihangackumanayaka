@@ -44,9 +44,13 @@ export function Hero() {
       <div className="hero-content">
         <p className="hero-eyebrow">Engineering Portfolio</p>
         <h1 id="hero-title">Vihanga C. Kumanayaka</h1>
+        <p className="hero-degree">
+          B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic
+          Systems Engineering
+        </p>
         <p className="hero-subtitle">
-          Engineering projects and the expertise gained along the way, built,
-          shipped, and documented.
+          Engineering projects, experiences and the skills honed along the way.
+          Designed, Built, Executed and Documented.
         </p>
         <div className="hero-actions">
           <a className="btn btn-secondary" href="#cv">

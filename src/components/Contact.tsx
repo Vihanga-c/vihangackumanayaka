@@ -4,14 +4,14 @@ const CONTACT_METHODS = [
   {
     id: "mobile",
     label: "Mobile Phone",
-    value: "+94 71 234 5678",
-    href: "tel:+94712345678",
+    value: "+94 71 460 3634",
+    href: "tel:+94714603634",
   },
   {
     id: "email",
     label: "Email",
-    value: "vihanga.kumanayaka@example.com",
-    href: "mailto:vihanga.kumanayaka@example.com",
+    value: "vihangackumanayaka@gmail.com",
+    href: "mailto:vihangackumanayaka@gmail.com",
   },
   {
     id: "linkedin",
