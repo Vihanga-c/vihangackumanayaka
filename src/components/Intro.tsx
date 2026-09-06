@@ -72,16 +72,6 @@ export function Intro() {
       aria-labelledby="intro-title"
     >
       <div className="intro-container">
-        <div className="intro-content">
-          <h2 id="intro-title" className="intro-title">
-            Who am I ?
-          </h2>
-          {ABOUT_ME_PARAGRAPHS.map((paragraph, i) => (
-            <p key={i} className="intro-text">
-              {paragraph}
-            </p>
-          ))}
-        </div>
         <div className="intro-image-wrapper">
           <div className="intro-image-tile">
             <img
@@ -92,6 +82,14 @@ export function Intro() {
             />
           </div>
         </div>
+        <h2 id="intro-title" className="intro-title">
+          Who am I?
+        </h2>
+        {ABOUT_ME_PARAGRAPHS.map((paragraph, i) => (
+          <p key={i} className="intro-text">
+            {paragraph}
+          </p>
+        ))}
       </div>
     </section>
   );

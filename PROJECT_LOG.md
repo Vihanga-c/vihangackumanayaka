@@ -39,7 +39,7 @@
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
 | `src/components/Hero.tsx` | Done (iteration 5) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA; parallax now applied synchronously on scroll (no rAF lag) |
-| `src/components/Intro.tsx` | Done (iteration 6) | White "Who am I ?" about section with `id="about"` anchor — title, real owner bio (3 paragraphs with `<strong>` emphasis), and 4:3 right-aligned image tile with rounded corners & thick black border; parallax sweeps up (1.2×), decelerates smoothly, then scrolls away naturally at 1× — applied synchronously, never frozen, never overshoots |
+| `src/components/Intro.tsx` | Done (iteration 7) | White "Who am I?" about section with `id="about"` anchor — single-line title, 4:3 floated image tile sitting alongside the title and bio text, text wraps naturally around the image and takes full container width below it with zero empty space; parallax sweeps up (1.2×), decelerates smoothly, then scrolls away naturally at 1× |
 | `src/lib/scrollToSection.ts` | Done (iteration 2) | Parallax-aware smooth scroll helper — measures the transform-invariant layout top by neutralizing the inline transform, so nav links land the section top exactly at the viewport top from any scroll position |
 | `src/components/Projects.tsx` | Done (iteration 1) | "My Projects" section (`id="projects"`) — 8 expandable image tiles in a 3-per-row grid, gradient-backed expand bodies, "Explore Project" arrow into ProjectDetail, parallax cover (1.45×) over Intro |
 | `src/components/ProjectDetail.tsx` | Done | Full-page project detail view with hero, meta, tags, gallery, specs, and prev/next footer nav |
@@ -63,6 +63,23 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-06 — Session 18: Single-line title & text wrap around Intro image
+
+- **`src/components/Intro.tsx`:**
+  - Removed `.intro-content` wrapper so that `.intro-image-wrapper`, `.intro-title`, and all paragraphs are direct children of `.intro-container`.
+  - Moved `.intro-image-wrapper` before `.intro-title` in DOM order and floated it to the right.
+  - Normalized title punctuation to `"Who am I?"` with `white-space: nowrap;` so the title stays on a single line and cannot wrap to two lines.
+- **`src/index.css`:**
+  - `.intro-container`: converted from flexbox to `display: flow-root; width: 100%; max-width: 1380px; margin: 0 auto;`, matching the site's layout container width and enabling standard float wrapping.
+  - `.intro-title`: adjusted clamp size (`clamp(2.6rem, 5.2vw, 5.2rem)`), line-height 1.1, and enforced `white-space: nowrap;` so it sits cleanly on a single line next to the image.
+  - `.intro-image-wrapper`: styled with `float: right; margin-left: clamp(2.5rem, 4vw, 4.5rem); margin-bottom: clamp(1.5rem, 2.5vw, 2.5rem); margin-top: 0.25rem;`.
+  - `.intro-image-tile`: sized with `width: clamp(340px, 36vw, 500px); aspect-ratio: 4 / 3; height: auto;` so it sits proportionally beside the title and first paragraph.
+  - `.intro-text`: removed `58ch` max-width constraint, added `text-wrap: pretty;` — paragraphs wrap smoothly alongside the floated image and expand across the full 1380px width below the image without remaining in a column or leaving empty space on the right.
+  - Mobile query (`@media (max-width: 960px)`): uses flex column with `order: 1` (Title), `order: 2` (Image, full width, centered), and `order: 3` (Paragraphs) for natural mobile reading order.
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (54 modules).
 
 ## Changelog / Build Log
 
