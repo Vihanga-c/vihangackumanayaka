@@ -67,6 +67,13 @@
 
 ## Changelog / Build Log
 
+### 2026-09-07 — Session 30: "why" → "why ?" in About Me bio
+
+- **`src/components/Intro.tsx`:** the phrase "explore the *why* behind engineering principles" now reads "explore the *why ?* behind engineering principles" (emphasized, matching the "Who am I ?" question-mark style used in the section title).
+- **Build verified:** `bun tsc --noEmit` passes; `bun run build` OK (63 modules).
+
+## Changelog / Build Log
+
 ### 2026-09-07 — Session 29: About Me paragraphs updated to the owner's new 4-paragraph bio
 
 - **`src/components/Intro.tsx`:** replaced the 3-paragraph About Me bio with the owner's new 4 paragraphs — (1) intro with degree/university + technical interests, (2) academic emphasis: GPA 3.69/4.00 and Dean's List (third semester), (3) karate team + two consecutive University of Moratuwa Colours awards, (4) closing growth-mindset paragraph. `**bold**` preserved as `<strong>`, `*why*` rendered as `<em>`.
