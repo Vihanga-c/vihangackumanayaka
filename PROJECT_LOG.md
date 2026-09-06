@@ -38,7 +38,7 @@
 |---|---|---|
 | `src/App.tsx` | Done (iteration 4) | Root component — renders `<Navbar />`, `<Hero />`, `<Intro />`, `<Projects />`, and `<Contact />`; manages project-detail view state |
 | `src/components/Navbar.tsx` | Done (iteration 3) | Left-aligned glassmorphic navbar that dynamically morphs between full horizontal menu (in Hero) and 3-line hamburger circle (on scroll), with dropdown menu support — links target `#about`, `#projects`, `#contact` |
-| `src/components/Hero.tsx` | Done (iteration 9) | Hero landing page: full-viewport Grainient background + name, degree line + university line ("B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering" / "(University of Moratuwa)") left-aligned together in a centered block under the name, tagline, and single glass "Get my CV" CTA — name and degree render on single lines with exactly matching widths (JS-measured font scaling); larger eye-catching typography; static (no parallax) |
+| `src/components/Hero.tsx` | Done (iteration 10) | Hero landing page: full-viewport Grainient background + name, degree + university block, shimmer-sweep tagline (two lines that shimmer sequentially top→bottom via a CSS gradient sweep + React toggle), and single glass "Get my CV" CTA — name and degree render on single lines with matching widths (degree = 80% of name width so it sits below the tagline size), larger tagline typography; static (no parallax) |
 | `src/components/Intro.tsx` | Done (iteration 9) | White "Who am I ?" about section with `id="about"` anchor — larger title (with space before "?"), owner's portrait (`src/assets/myself.jpg`) floated right at its natural 3:4 aspect ratio (uncropped, `object-fit: contain`), text wraps around the image and expands full-width below it; static so the section flows directly into Projects |
 | `src/lib/scrollToSection.ts` | Done (iteration 3) | Smooth scroll helper for static sections — no parallax correction needed anymore (all `SECTION_RATES` = 0), targets each section's exact layout top |
 | `src/components/Projects.tsx` | Done (iteration 4) | "My Projects" section (`id="projects"`) — 8 interactive project cards displaying image, title, 3 primary skills + `+N` count badge, compact intro, and "View Project" action; uniform tile heights; entire card clickable with hover lift and glow |
@@ -64,6 +64,22 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-07 — Session 26: Shimmer-sweep tagline in Hero + font hierarchy tweaks
+
+- **`src/components/Hero.tsx` (iteration 10):**
+  - Tagline split into two lines: "Engineering projects, experiences and the skills honed along the way." / "Designed, Built, Executed and Documented."
+  - Added a shimmer effect that sweeps through the top line first, then the bottom line, alternating every ~1.4s (React `shimmerLine` state toggling an `is-shimmering` class; disabled under `prefers-reduced-motion`).
+  - Degree width target changed from `nameW` → `0.8 * nameW` in the width-sync effect, so the degree font is now smaller than the tagline (noted: this intentionally relaxes the earlier "degree == name width" match).
+- **`src/index.css`:**
+  - `.hero-shimmer-line`: `clamp(1.35rem, 3vw, 1.7rem)` (larger than before); idle = muted white; `.is-shimmering` = `color: transparent` + `background-clip: text` with a 300% gradient and `hero-shimmer-sweep` keyframes (background-position `100% → -100%`, left-to-right sweep over 1.1s, `forwards`).
+  - `.hero-tagline`: `margin: 2.2rem auto 0` — larger space between the degree block and the tagline.
+  - Degree line now renders at ~21.8px vs tagline ~27.2px on desktop (was 27px vs 24px before).
+- **E2E verified (Playwright, 1280×800):** at t0 line 1 has the shimmer animation and line 2 is idle; at t0+1.5s line 2 is shimmering and line 1 idle. Degree font 21.8px < tagline 27.2px; degree width 844 = 80% of name width 1056; tagline margin-top 35.2px.
+- **Note:** the pasted snippet used `motion` + a shadcn `ShimmeringText`; this project has no Tailwind/motion, so the effect was implemented in the project's plain CSS stack (same visual result).
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK.
 
 ## Changelog / Build Log
 

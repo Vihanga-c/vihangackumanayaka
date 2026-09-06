@@ -343,11 +343,44 @@ html {
   white-space: nowrap;
 }
 
-.hero-subtitle {
-  margin: 1.1rem auto 0;
-  max-width: 46rem;
-  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
-  color: var(--ink-muted);
+.hero-tagline {
+  margin: 2.2rem auto 0;
+}
+
+.hero-shimmer-line {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.hero-shimmer-line.is-shimmering {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.78) 35%,
+    rgba(255, 255, 255, 0.92) 45%,
+    #ffffff 50%,
+    rgba(255, 255, 255, 0.92) 55%,
+    rgba(255, 255, 255, 0.78) 65%
+  );
+  background-size: 300% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: hero-shimmer-sweep 1.1s linear forwards;
+}
+
+@keyframes hero-shimmer-sweep {
+  from {
+    background-position: 100% center;
+  }
+  to {
+    background-position: -100% center;
+  }
 }
 
 .hero-actions {

@@ -3,6 +3,7 @@ import Grainient from "./Grainient";
 
 export function Hero() {
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [shimmerLine, setShimmerLine] = useState<0 | 1>(0);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const degreesRef = useRef<HTMLDivElement>(null);
   const degreeRef = useRef<HTMLParagraphElement>(null);
@@ -14,6 +15,17 @@ export function Hero() {
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
+
+  // The shimmer sweep passes through the top tagline line first, then the
+  // line below it, alternating. Disabled under reduced motion.
+  useEffect(() => {
+    if (reducedMotion) return;
+    const interval = setInterval(
+      () => setShimmerLine((prev) => (prev === 0 ? 1 : 0)),
+      1400,
+    );
+    return () => clearInterval(interval);
+  }, [reducedMotion]);
 
   // Keep the name and the degree line exactly the same rendered width, and
   // never let the name overflow its container (both stay on a single line).
@@ -42,7 +54,7 @@ export function Hero() {
       if (!window.matchMedia("(max-width: 640px)").matches) {
         const baseDegreeFont = parseFloat(getComputedStyle(degree).fontSize);
         const neededDegreeW = degree.scrollWidth;
-        degrees.style.fontSize = `${(baseDegreeFont * nameW) / neededDegreeW}px`;
+        degrees.style.fontSize = `${(baseDegreeFont * nameW * 0.8) / neededDegreeW}px`;
       }
     };
 
@@ -92,10 +104,23 @@ export function Hero() {
           </p>
           <p className="hero-university">(University of Moratuwa)</p>
         </div>
-        <p className="hero-subtitle">
-          Engineering projects, experiences and the skills honed along the way.
-          Designed, Built, Executed and Documented.
-        </p>
+        <div className="hero-tagline">
+          <p
+            className={`hero-shimmer-line${
+              shimmerLine === 0 ? " is-shimmering" : ""
+            }`}
+          >
+            Engineering projects, experiences and the skills honed along the
+            way.
+          </p>
+          <p
+            className={`hero-shimmer-line${
+              shimmerLine === 1 ? " is-shimmering" : ""
+            }`}
+          >
+            Designed, Built, Executed and Documented.
+          </p>
+        </div>
         <div className="hero-actions">
           <a className="btn btn-secondary" href="#cv">
             Get my CV
