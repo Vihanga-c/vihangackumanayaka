@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { PROJECTS } from "../data/projectsData";
 import type { Project } from "../data/projectsData";
 
@@ -7,21 +6,6 @@ interface ProjectsProps {
 }
 
 export function Projects({ onViewDetails }: ProjectsProps) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-
-  // Close on Escape
-  useEffect(() => {
-    if (!expandedId) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setExpandedId(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [expandedId]);
-
-  const toggleExpand = (id: string) =>
-    setExpandedId((prev) => (prev === id ? null : id));
-
   return (
     <section
       id="projects"
@@ -44,8 +28,6 @@ export function Projects({ onViewDetails }: ProjectsProps) {
             <ProjectTile
               key={project.id}
               project={project}
-              isExpanded={expandedId === project.id}
-              onToggle={() => toggleExpand(project.id)}
               onViewDetails={onViewDetails}
             />
           ))}
@@ -55,25 +37,38 @@ export function Projects({ onViewDetails }: ProjectsProps) {
   );
 }
 
-// ── Single tile ──────────────────────────────────────────────────────────────
+// ── Single project tile (interactive card) ──────────────────────────────────
 interface TileProps {
   project: Project;
-  isExpanded: boolean;
-  onToggle: () => void;
   onViewDetails: (id: string) => void;
 }
 
-function ProjectTile({ project, isExpanded, onToggle, onViewDetails }: TileProps) {
+function ProjectTile({ project, onViewDetails }: TileProps) {
+  const handleClick = () => onViewDetails(project.id);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onViewDetails(project.id);
+    }
+  };
+
   return (
     <article
-      className={`project-tile${isExpanded ? " project-tile--expanded" : ""}`}
+      className="project-tile"
       style={
-        isExpanded
-          ? ({ "--tile-gradient": project.gradientBackdrop } as React.CSSProperties)
-          : undefined
+        {
+          "--project-accent": project.accentColor,
+          "--tile-gradient": project.gradientBackdrop,
+        } as React.CSSProperties
       }
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`View full project details for ${project.title}`}
     >
-      {/* Image area — always visible */}
+      {/* Image preview */}
       <div className="project-tile-image-wrap">
         <img
           src={project.image}
@@ -82,59 +77,33 @@ function ProjectTile({ project, isExpanded, onToggle, onViewDetails }: TileProps
           loading="lazy"
         />
         <div className="project-tile-overlay" />
-        <div className="project-tile-bottom">
-          <span className="project-tile-name">{project.title}</span>
-          <button
-            type="button"
-            className={`project-tile-plus${isExpanded ? " is-close" : ""}`}
-            onClick={onToggle}
-            aria-label={isExpanded ? `Collapse ${project.title}` : `Expand ${project.title}`}
-            aria-expanded={isExpanded}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              aria-hidden="true"
-            >
-              {isExpanded ? (
-                <>
-                  <line x1="2" y1="2" x2="12" y2="12" />
-                  <line x1="12" y1="2" x2="2" y2="12" />
-                </>
-              ) : (
-                <>
-                  <line x1="7" y1="1" x2="7" y2="13" />
-                  <line x1="1" y1="7" x2="13" y2="7" />
-                </>
-              )}
-            </svg>
-          </button>
-        </div>
       </div>
 
-      {/* Expanded body — slides in below image */}
-      <div className="project-tile-expand-body">
-        <div className="project-tile-expand-text">
-          <h3 className="project-tile-expand-title">{project.title}</h3>
-          <p className="project-tile-expand-desc">{project.shortDesc}</p>
-        </div>
-        <button
-          type="button"
-          className="project-tile-arrow"
-          onClick={() => onViewDetails(project.id)}
-          style={{ "--project-accent": project.accentColor } as React.CSSProperties}
-          aria-label={`View full project details for ${project.title}`}
-        >
-          <span className="project-tile-arrow-label">Explore Project</span>
-          <span className="project-tile-arrow-icon" aria-hidden="true">
+      {/* Card body */}
+      <div className="project-tile-content">
+        <h3 className="project-tile-title">{project.title}</h3>
+
+        {/* Skills / tags */}
+        {project.tags && project.tags.length > 0 && (
+          <div className="project-tile-tags" aria-label="Project technologies">
+            {project.tags.map((tag) => (
+              <span key={tag} className="project-tile-tag">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Compact intro */}
+        <p className="project-tile-desc">{project.shortDesc}</p>
+
+        {/* Footer View Project action */}
+        <div className="project-tile-footer">
+          <span className="project-tile-link-text">View Project</span>
+          <span className="project-tile-link-icon" aria-hidden="true">
             <svg
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -146,8 +115,9 @@ function ProjectTile({ project, isExpanded, onToggle, onViewDetails }: TileProps
               <polyline points="12 5 19 12 12 19" />
             </svg>
           </span>
-        </button>
+        </div>
       </div>
     </article>
   );
 }
+

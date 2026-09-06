@@ -41,7 +41,7 @@
 | `src/components/Hero.tsx` | Done (iteration 5) | Hero landing page: full-viewport Grainient background + name, subtitle, and single glass "Get my CV" CTA; parallax now applied synchronously on scroll (no rAF lag) |
 | `src/components/Intro.tsx` | Done (iteration 7) | White "Who am I?" about section with `id="about"` anchor — single-line title, 4:3 floated image tile sitting alongside the title and bio text, text wraps naturally around the image and takes full container width below it with zero empty space; parallax sweeps up (1.2×), decelerates smoothly, then scrolls away naturally at 1× |
 | `src/lib/scrollToSection.ts` | Done (iteration 2) | Parallax-aware smooth scroll helper — measures the transform-invariant layout top by neutralizing the inline transform, so nav links land the section top exactly at the viewport top from any scroll position |
-| `src/components/Projects.tsx` | Done (iteration 2) | "My Projects" section (`id="projects"`) — 8 real project tiles in a 3-per-row grid, gradient-backed expand bodies showing each project's short intro, "Explore Project" arrow into ProjectDetail, parallax cover over Intro |
+| `src/components/Projects.tsx` | Done (iteration 3) | "My Projects" section (`id="projects"`) — 8 interactive project cards displaying image, title, skills tags, compact intro, and "View Project" action by default; entire card is clickable; hover triggers pop-up lift (-6px), radiant gradient glow, and text/arrow highlights |
 | `src/components/ProjectDetail.tsx` | Done (iteration 2) | Full-page project detail view — hero (category, title, short intro, technical-area tags), attention-grabbing multi-media gallery (images + autoplaying muted videos with play-badge thumbnails), free-form content sections with `**bold**` emphasis, and prev/next footer nav |
 | `src/data/projectsData.ts` | Rewritten (Session 18) | 8 real engineering projects (Otter robot, Argo micromouse, DIYAKAWA 3.0, Bicycle instrumentation, SCARA vision pick-and-place, Factory floor optimization, IR cooker reverse engineering, Movie projector replica) — `Project` model now uses `sections` (heading + paragraphs/bullets) and `gallery` items with `type: "image" | "video"`; technical areas as tags |
 | `src/components/Contact.tsx` | Done (iteration 1) | White "Contact Me" section (`id="contact"`) after Projects — large left-aligned title, contact methods in 2 rows (Mobile/Email row 1, centered LinkedIn row 2), parallax cover (1.6×) |
@@ -64,6 +64,21 @@
 3. Before executing any task, read this file first — know all changes and builds before starting.
 4. Commit messages should be concise and descriptive of the module(s) touched.
 5. **All future changes are committed to the `develop` branch** (created 2026-08-29 from `main`). `main` stays stable; merge `develop` into `main` only when the owner approves a release.
+
+## Changelog / Build Log
+
+### 2026-09-06 — Session 19: Full interactive project cards, hover highlights, descender fix & Intro space cleanup
+
+- **`src/components/Projects.tsx` (iteration 3):**
+  - Replaced expandable `+` tile model with full interactive project cards shown by default (matching reference pattern on `jrdan.dev` with custom enhancements).
+  - Each card renders: cover image with subtle hover zoom (`1.05x`), project title, skills & technologies tag pills (`project.tags`), compact intro description (`project.shortDesc`), and "View Project" footer with arrow icon.
+  - Entire card is clickable (`onClick={() => onViewDetails(project.id)}`, `role="button"`, `tabIndex={0}`, keyboard navigation on Enter/Space).
+- **`src/index.css`:**
+  - **Hover Effects on Cards:** added card lift (`transform: translateY(-6px)`), radiant gradient glow backdrop derived from `--tile-gradient`, accent border highlight (`--project-accent`), title text lighting up in accent color, and "View Project" arrow shifting right (`translateX(4px)`).
+  - **Skills Tags:** styled tag pills with translucent background, border, and clean typography (`0.74rem`, `font-weight: 600`).
+  - **Title Descender Cutoff Fix:** added `display: inline-block; line-height: 1.25; padding-bottom: 0.15em;` on `.projects-title` so descenders on "y" and "j" are never clipped by the gradient text clipping mask or subsequent content.
+  - **Intro Section Spacing Cleanup:** removed `min-height: 180vh;` from `.intro` and set `padding: 12vh 4rem 12vh;` so the section naturally concludes after the bio content, eliminating the huge empty white void between About Me and Projects.
+- **Build verified:** `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (67 modules).
 
 ## Changelog / Build Log
 
