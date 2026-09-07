@@ -67,6 +67,16 @@
 
 ## Changelog / Build Log
 
+### 2026-09-07 — Session 36: Release to main + production verification (66/66 E2E on vercel.app)
+
+- **Release:** `develop` (206c265) fast-forward-merged into `main` and pushed — Vercel production deployment succeeded automatically. Live site: `https://vihangackumanayaka.vercel.app` now serves the routed site.
+- **Pre-release verification (local):** `bun tsc --noEmit` passes with 0 errors; full local E2E suite 66/66 passed (33 desktop + 33 mobile) in 43.9s.
+- **Deployment check:** deep link `https://vihangackumanayaka.vercel.app/projects/otter-robot` returns the app shell (HTTP 200) — confirms the new SPA `rewrites` rule is active in production (previously unknown paths 404'd).
+- **Production E2E:** full suite run against `https://vihangackumanayaka.vercel.app` — 66/66 passed (incl. all 6 new routing tests: URL updates, back/forward, deep links, unknown-route redirect) in 57.8s.
+- **Note:** `main` now carries Sessions 34–35 (degree "(UG)" title + React Router routing); `develop` is even with `main` (this log entry only).
+
+## Changelog / Build Log
+
 ### 2026-09-07 — Session 35: Client-side routing with React Router v7 (real links, URL updates, working back button)
 
 - **Routing library added:** `react-router-dom@7.18.3` (the project previously had no router — `App.tsx` swapped views via `useState`). Now `src/frontend.tsx` wraps `<App />` in `<BrowserRouter>`; `src/App.tsx` declares two routes: `/` (portfolio: Navbar + Hero + Intro + Projects + Contact) and `/projects/:projectId` (project detail). Unknown paths and unknown project ids render `<Navigate to="/" replace />`.
