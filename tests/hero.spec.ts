@@ -12,7 +12,7 @@ test.describe("Hero", () => {
 
     await expect(
       page.getByText(
-        "B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering",
+        "B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering (UG)",
       ),
     ).toBeVisible();
     await expect(page.getByText("(University of Moratuwa)")).toBeVisible();

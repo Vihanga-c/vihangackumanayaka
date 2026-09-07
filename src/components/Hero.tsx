@@ -101,7 +101,7 @@ export function Hero() {
         <div className="hero-degrees" ref={degreesRef}>
           <p className="hero-degree" ref={degreeRef}>
             B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic
-            Systems Engineering
+            Systems Engineering (UG)
           </p>
           <p className="hero-university">(University of Moratuwa)</p>
         </div>

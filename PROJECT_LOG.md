@@ -67,6 +67,14 @@
 
 ## Changelog / Build Log
 
+### 2026-09-07 — Session 34: "(UG)" appended to the degree title
+
+- **`src/components/Hero.tsx`:** the degree line now reads `B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering (UG)` — "(UG)" added at the end of the degree title, before the "(University of Moratuwa)" university line (the width-sync effect auto-scales the font so the line still renders at 80% of the name width).
+- **`tests/hero.spec.ts`:** degree-text assertion updated to include "(UG)".
+- **E2E verified:** hero spec 8/8 passed (desktop + mobile); `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (63 modules).
+
+## Changelog / Build Log
+
 ### 2026-09-07 — Session 33: Release to main + production verification (52/52 E2E on vercel.app)
 
 - **Release:** `develop` (1850a26) fast-forward-merged into `main` and pushed — Vercel production deployment succeeded (deployment status `success`). Live site: `https://vihangackumanayaka.vercel.app` serves the finalised website (title verified, CV PDF served with `Content-Disposition: attachment; filename="Vihanga Chamodya Kumanayaka - CV.pdf"`, 298,857 bytes, `application/pdf`).
