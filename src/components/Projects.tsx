@@ -1,11 +1,8 @@
+import { Link } from "react-router-dom";
 import { PROJECTS } from "../data/projectsData";
 import type { Project } from "../data/projectsData";
 
-interface ProjectsProps {
-  onViewDetails: (projectId: string) => void;
-}
-
-export function Projects({ onViewDetails }: ProjectsProps) {
+export function Projects() {
   return (
     <section
       id="projects"
@@ -25,11 +22,7 @@ export function Projects({ onViewDetails }: ProjectsProps) {
 
         <div className="projects-grid">
           {PROJECTS.map((project) => (
-            <ProjectTile
-              key={project.id}
-              project={project}
-              onViewDetails={onViewDetails}
-            />
+            <ProjectTile key={project.id} project={project} />
           ))}
         </div>
       </div>
@@ -37,28 +30,20 @@ export function Projects({ onViewDetails }: ProjectsProps) {
   );
 }
 
-// ── Single project tile (interactive card) ──────────────────────────────────
+// ── Single project tile (interactive card, a real link so it can be
+//    opened in a new tab and updates the URL via client-side routing) ────────
 interface TileProps {
   project: Project;
-  onViewDetails: (id: string) => void;
 }
 
-function ProjectTile({ project, onViewDetails }: TileProps) {
-  const handleClick = () => onViewDetails(project.id);
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      onViewDetails(project.id);
-    }
-  };
-
+function ProjectTile({ project }: TileProps) {
   const MAX_VISIBLE_TAGS = 3;
   const visibleTags = project.tags ? project.tags.slice(0, MAX_VISIBLE_TAGS) : [];
   const remainingTagsCount = project.tags ? project.tags.length - MAX_VISIBLE_TAGS : 0;
 
   return (
-    <article
+    <Link
+      to={`/projects/${project.id}`}
       className="project-tile"
       style={
         {
@@ -66,10 +51,6 @@ function ProjectTile({ project, onViewDetails }: TileProps) {
           "--tile-gradient": project.gradientBackdrop,
         } as React.CSSProperties
       }
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      role="button"
-      tabIndex={0}
       aria-label={`View full project details for ${project.title}`}
     >
       {/* Image preview */}
@@ -126,8 +107,6 @@ function ProjectTile({ project, onViewDetails }: TileProps) {
           </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
-
-

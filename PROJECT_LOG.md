@@ -67,6 +67,18 @@
 
 ## Changelog / Build Log
 
+### 2026-09-07 — Session 35: Client-side routing with React Router v7 (real links, URL updates, working back button)
+
+- **Routing library added:** `react-router-dom@7.18.3` (the project previously had no router — `App.tsx` swapped views via `useState`). Now `src/frontend.tsx` wraps `<App />` in `<BrowserRouter>`; `src/App.tsx` declares two routes: `/` (portfolio: Navbar + Hero + Intro + Projects + Contact) and `/projects/:projectId` (project detail). Unknown paths and unknown project ids render `<Navigate to="/" replace />`.
+- **Project cards are now real semantic links (`src/components/Projects.tsx`):** each tile is a `<Link to={/projects/${id}}>` (`<a href>`), replacing the `<article role="button">` with JS click handlers. Right-click → "Open in new tab", middle-click, and keyboard Enter all work natively; the `onViewDetails` prop was removed. `.project-tile` CSS gained `text-decoration: none; color: inherit;`.
+- **Detail-view navigation (`src/components/ProjectDetail.tsx`) uses links too:** "Back to Projects" and "All Projects" are `<Link to="/">` that set a return-target flag (`setReturnTarget("projects")` in `src/lib/scrollToSection.ts`), consumed once by the portfolio route on mount so the section scrolls to the projects area. Prev/Next are `<Link to="/projects/<id>">`. Browser back/forward needs no JS — the browser restores the recorded scroll position of the `/` entry.
+- **Critical build fix — `package.json` build now passes `--public-path "/"`:** the built `index.html` previously referenced assets with *relative* paths (`./index-xxx.js`), so a full-page load at a deep link like `/projects/argo` resolved the bundle to `/projects/index-xxx.js`, the SPA fallback returned HTML, and the app never booted (blank page). Absolute asset URLs fix deep links, refresh, and open-in-new-tab everywhere. (This would also have broken deep links in production on Vercel.)
+- **`vercel.json`:** added `rewrites: [{ source: "/(.*)", destination: "/index.html" }]` — Vercel serves real files first, then falls back to the SPA shell for deep links (new tab / refresh / address-bar entry).
+- **Tests:** `tests/projects.spec.ts` — tiles asserted to be real links with `/projects/<id>` hrefs; Back/All Projects/Prev/Next roles updated from `button` to `link` in `tests/projects.spec.ts` + `tests/project-detail.spec.ts`. New `tests/routing.spec.ts` (6 tests × 2 projects): URL updates to `/projects/<id>` on open, browser back returns to the portfolio (does not exit the site) and forward returns to detail, back/forward walk through previously viewed projects, deep-linking `/projects/...` loads directly, "Back to Projects" returns to `/` and lands on the projects section, unknown ids/routes redirect to `/`.
+- **E2E verified:** full suite 66/66 passed (33 desktop + 33 mobile) in 50.4s; `bun tsc --noEmit` passes with 0 errors; `bun run build` OK (69 modules, includes react-router).
+
+## Changelog / Build Log
+
 ### 2026-09-07 — Session 34: "(UG)" appended to the degree title
 
 - **`src/components/Hero.tsx`:** the degree line now reads `B.Sc (Hons) Mechanical Engineering, Specialising in Mechatronic Systems Engineering (UG)` — "(UG)" added at the end of the degree title, before the "(University of Moratuwa)" university line (the width-sync effect auto-scales the font so the line still renders at 80% of the name width).

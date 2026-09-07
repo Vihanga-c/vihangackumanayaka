@@ -667,6 +667,8 @@ html {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   cursor: pointer;
   outline: none;
+  text-decoration: none;
+  color: inherit;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.35s var(--ease),
     box-shadow 0.35s var(--ease),
@@ -1014,6 +1016,7 @@ html {
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
   transition: background 0.2s var(--ease), color 0.2s var(--ease),
     border-color 0.2s var(--ease), transform 0.2s var(--ease);
 }
@@ -1248,6 +1251,7 @@ html {
   background: rgba(255, 255, 255, 0.04);
   color: #ffffff;
   cursor: pointer;
+  text-decoration: none;
   transition: background 0.2s var(--ease), border-color 0.2s var(--ease),
     transform 0.2s var(--ease);
   text-align: left;
@@ -1286,6 +1290,7 @@ html {
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
   transition: background 0.2s var(--ease), color 0.2s var(--ease),
     border-color 0.2s var(--ease);
 }

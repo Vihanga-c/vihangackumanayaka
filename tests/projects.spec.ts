@@ -56,9 +56,20 @@ test.describe("My Projects section", () => {
       page.getByRole("heading", { name: PROJECT_TITLES[0], level: 1 }),
     ).toBeVisible();
 
-    await page.getByRole("button", { name: "Back to Projects" }).click();
+    await page.getByRole("link", { name: "Back to Projects" }).click();
     await expect(
       page.getByRole("heading", { name: "My Projects", level: 2 }),
     ).toBeVisible();
+  });
+
+  test("tiles are real links pointing at their project route", async ({
+    page,
+  }) => {
+    const tiles = page.locator(".project-tile");
+    await expect(tiles).toHaveCount(8);
+    for (const tile of await tiles.all()) {
+      const href = await tile.getAttribute("href");
+      expect(href).toMatch(/^\/projects\/[a-z0-9-]+$/);
+    }
   });
 });

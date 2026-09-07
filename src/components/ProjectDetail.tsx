@@ -1,10 +1,10 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import type { Project, ProjectMediaItem } from "../data/projectsData";
+import { setReturnTarget } from "../lib/scrollToSection";
 
 interface ProjectDetailProps {
   project: Project;
-  onBack: () => void;
-  onSelectOtherProject: (projectId: string) => void;
   allProjects: Project[];
 }
 
@@ -57,8 +57,6 @@ function MediaBlock({
 
 export function ProjectDetail({
   project,
-  onBack,
-  onSelectOtherProject,
   allProjects,
 }: ProjectDetailProps) {
   // Scroll to top when project changes
@@ -83,10 +81,10 @@ export function ProjectDetail({
     >
       {/* Top sticky navigation bar */}
       <header className="project-detail-nav">
-        <button
-          type="button"
+        <Link
+          to="/"
           className="project-back-btn"
-          onClick={onBack}
+          onClick={() => setReturnTarget("projects")}
           aria-label="Back to projects overview"
         >
           <svg
@@ -103,7 +101,7 @@ export function ProjectDetail({
             <polyline points="12 19 5 12 12 5" />
           </svg>
           <span>Back to Projects</span>
-        </button>
+        </Link>
 
         <div className="project-detail-nav-title">{project.title}</div>
       </header>
@@ -172,31 +170,29 @@ export function ProjectDetail({
 
       {/* Bottom Navigation between projects */}
       <footer className="project-detail-footer">
-        <button
-          type="button"
+        <Link
+          to={`/projects/${prevProject.id}`}
           className="project-next-prev-btn prev"
-          onClick={() => onSelectOtherProject(prevProject.id)}
         >
           <span className="nav-sub">Previous Project</span>
           <span className="nav-main">← {prevProject.title}</span>
-        </button>
+        </Link>
 
-        <button
-          type="button"
+        <Link
+          to="/"
           className="project-back-center-btn"
-          onClick={onBack}
+          onClick={() => setReturnTarget("projects")}
         >
           All Projects
-        </button>
+        </Link>
 
-        <button
-          type="button"
+        <Link
+          to={`/projects/${nextProject.id}`}
           className="project-next-prev-btn next"
-          onClick={() => onSelectOtherProject(nextProject.id)}
         >
           <span className="nav-sub">Next Project</span>
           <span className="nav-main">{nextProject.title} →</span>
-        </button>
+        </Link>
       </footer>
     </div>
   );

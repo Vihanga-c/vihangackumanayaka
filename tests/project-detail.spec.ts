@@ -35,7 +35,7 @@ test.describe("Project detail view", () => {
   test("next-project navigation moves to the following project", async ({
     page,
   }) => {
-    await page.getByRole("button", { name: new RegExp(`Next Project`) }).click();
+    await page.getByRole("link", { name: new RegExp(`Next Project`) }).click();
     await expect(
       page.getByRole("heading", { name: SECOND_PROJECT, level: 1 }),
     ).toBeVisible();
@@ -44,7 +44,7 @@ test.describe("Project detail view", () => {
   test("previous-project navigation wraps to the last project", async ({
     page,
   }) => {
-    await page.getByRole("button", { name: /Previous Project/ }).click();
+    await page.getByRole("link", { name: /Previous Project/ }).click();
     await expect(
       page.getByRole("heading", { name: LAST_PROJECT, level: 1 }),
     ).toBeVisible();
@@ -53,7 +53,7 @@ test.describe("Project detail view", () => {
   test('the center "All Projects" button returns to the overview', async ({
     page,
   }) => {
-    await page.getByRole("button", { name: "All Projects" }).click();
+    await page.getByRole("link", { name: "All Projects" }).click();
     await expect(
       page.getByRole("heading", { name: "My Projects", level: 2 }),
     ).toBeVisible();
@@ -63,11 +63,11 @@ test.describe("Project detail view", () => {
     page,
   }) => {
     // DIYAKAWA 3.0 is the third project (Otter → Argo → DIYAKAWA)
-    await page.getByRole("button", { name: /Next Project/ }).click();
+    await page.getByRole("link", { name: /Next Project/ }).click();
     await expect(
       page.getByRole("heading", { name: SECOND_PROJECT, level: 1 }),
     ).toBeVisible();
-    await page.getByRole("button", { name: /Next Project/ }).click();
+    await page.getByRole("link", { name: /Next Project/ }).click();
     await expect(
       page.getByRole("heading", { name: "DIYAKAWA 3.0", level: 1 }),
     ).toBeVisible();

@@ -8,6 +8,23 @@ export const SECTION_RATES: Record<string, number> = {
   contact: 0, // static
 };
 
+// The in-page "Back to Projects" / "All Projects" links navigate to "/" and
+// want to land on the projects section. The browser's own back/forward
+// restores the recorded scroll position on its own, so this flag is only
+// set by explicit in-page links, then consumed once by the portfolio route
+// on mount.
+let pendingReturnTarget: string | null = null;
+
+export function setReturnTarget(sectionId: string | null) {
+  pendingReturnTarget = sectionId;
+}
+
+export function consumeReturnTarget(): string | null {
+  const target = pendingReturnTarget;
+  pendingReturnTarget = null;
+  return target;
+}
+
 export function scrollToSection(
   sectionId: string,
   behavior: ScrollBehavior = "smooth",

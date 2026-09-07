@@ -1,6 +1,12 @@
 {
   "buildCommand": "bun run build",
   "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/Vihanga-Chamodya-Kumanayaka-CV-:hash.pdf",
